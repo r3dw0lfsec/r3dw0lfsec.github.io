@@ -12,7 +12,7 @@ url:                   https://r3dw0lfsec.github.io
 # Use the empty string '' otherwise.
 # For GitHub project sites, this is usually the name of the project,
 # e.g. `/hydejack`.
-baseurl:               ''
+baseurl:               'r3dw0lf-blogs'
 
 
 # General settings
