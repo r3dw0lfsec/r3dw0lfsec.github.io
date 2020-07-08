@@ -6,7 +6,7 @@ Hey There! Thank you for visiting and showing your interest in finding WhoAmI.
 
 My name is Venkatraman K, a passionate Information Security enhtuiast from India. I'm currently working as Security Analyst in a Cyber Security Startup.
 
-![](http://localhost:4000/assets/img/my-image.jpg) 
+![](https://r3dw0lfsec.github.io/assets/img/my-image.jpg) 
 
 I'm a Certified Ethical Hacker v10 (CEH V10), currently preparing for OSCP Certification in mid 2020 (wish me luck ;) ).
 
