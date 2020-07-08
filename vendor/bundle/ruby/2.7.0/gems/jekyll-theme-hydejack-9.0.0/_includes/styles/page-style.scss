@@ -1,0 +1,9 @@
+{% assign color       = include.color       | default:'#4fb1ba' %}
+{% assign theme_color = include.theme_color | default:'#193747' %}
+
+html {
+  --accent-color: {{ color }};
+  --accent-color-faded: #{fade-out({{ color }}, 0.5)};
+  --accent-color-darkened: #{darken({{ color }}, 7.5%)};
+  --theme-color: {{ theme_color }};
+}
