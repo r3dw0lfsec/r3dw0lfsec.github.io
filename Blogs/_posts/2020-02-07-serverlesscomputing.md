@@ -11,7 +11,7 @@ permalink: /:categories/serverless.html
 
 Most of the Serverless architecture are built with a motto of ***"Focus on the application, not the infrastructure and maintenance"***
 {:.lead}
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg)
 
 * toc
 {:toc .large-only}
@@ -28,7 +28,7 @@ Serverless is a cloud computing execution model where the cloud provider dynamic
 ### How Does Serverless Computing Works?
 In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.
 
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/2.png)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/2.png)
 
 Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.
 
@@ -66,9 +66,9 @@ serverless create -t aws-nodejs
 ```
 3. It creates two files : **handler.js** and **serverless.yml**. **serverless.yml** is like a configuration file for your handler file, **handler.js** is like a function file where each function that are required are coded.
 4. Uncomment the needed event part in the serverless.yml .Here i am using the http event part
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/3.png)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/3.png)
 5. Run the command serverless deploy to deploy your instance.
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/4.png)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/4.png)
 
 ## Serverless Computing using Azure Functions
 Microsoft Azure allows the users to develop and run the serverless functions both on Cloud and Local environment. 
@@ -91,13 +91,13 @@ cd {Folder_Name}
 ```bash
 func new --name {Function_Name} --template "HttpTrigger"
 ```
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/5.png)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/5.png)
 5. The following command starts the function app:
 ```bash
 func start
 ```
 6. Navigate to URL displayed, append the query string *?name={yourname}* to the URL and execute the request.
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs///assets/img/blog/cloudsecurity/serverlesscomputing/6.png)
+![](http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/6.png)
 
 ## Serverless Computing using Google Cloud Functions
 Follow the below steps to deploy a simple serverless service using Google Cloud Functions
@@ -121,7 +121,7 @@ serverless deploy
 ```
 
 ## Comparison
-![](http://r3dw0lfsec.github.io/r3dw0lf-blogs//assets/img/blog/cloudsecurity/serverlesscomputing/7.png)
+![](http://localhost:4000/assets/img/blog/cloudsecurity/serverlesscomputing/7.png)
 
 ## Security Risks in Serverless Computing
 1. **Function Event-Data Injection**: Serverless functions can consume input form different types of event sources. Various parts of these event sources may contain user-controlled or untrusted inputs that should be carefully inspected.
