@@ -1,0 +1,250 @@
+I"Ä<hy-drawer
+  id="_drawer"
+  class=""
+  side="left"
+  threshold="10"
+  noscroll
+  
+>
+  <header id="_sidebar" class="sidebar" role="banner">
+    
+
+
+
+
+<div class="sidebar-bg sidebar-overlay" style="background-color:rgb(25,55,71);background-image:url(/assets/img/sidebar_bg.jpg)"></div>
+
+    <div class="sidebar-sticky">
+  <div class="sidebar-about">
+    
+      <a class="no-hover" href="/" tabindex="-1">
+        <img src="/assets/img/red_wolf.jpg" class="avatar" alt="r3dw0lf_sec" width="120" height="120" loading="lazy" />
+      </a>
+    
+    <a class="sidebar-title" href="/"><h2 class="h1">r3dw0lf_sec</h2></a>
+    
+    
+      <p class="">
+        Privacy is a myth.
+
+      </p>
+    
+  </div>
+
+  <nav class="sidebar-nav heading" role="navigation">
+    <span class="sr-only">Navigation:</span>
+<ul>
+  
+    
+      
+      <li>
+        <a
+          id="_drawer--opened"
+          href="/recentpublishes/"
+          class="sidebar-nav-item"
+          
+        >
+          Recent Publishes
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/blog/index.html"
+          class="sidebar-nav-item"
+          
+        >
+          Blogs
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="https://drive.google.com/file/d/1x9U6klYusNAEH7E30Vh-whvXXaK0kRu8/view?usp=sharing"
+          class="sidebar-nav-item"
+          
+        >
+          Resume
+        </a>
+      </li>
+    
+      
+      <li>
+        <a
+          
+          href="/about/index.html"
+          class="sidebar-nav-item"
+          
+        >
+          $ whoami
+        </a>
+      </li>
+    
+  
+</ul>
+
+  </nav>
+
+  
+  <div class="sidebar-social">
+    <span class="sr-only">Social:</span>
+<ul>
+  
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://twitter.com/r3dw0lf_sec" title="Twitter" class="no-mark-external">
+      <span class="icon-twitter"></span>
+      <span class="sr-only">Twitter</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://github.com/r3dw0lfsec" title="GitHub" class="no-mark-external">
+      <span class="icon-github"></span>
+      <span class="sr-only">GitHub</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="mailto:kvenkatraman10@gmail.com" title="Email" class="no-mark-external">
+      <span class="icon-mail"></span>
+      <span class="sr-only">Email</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.hackthebox.eu/profile/21636" title="hackthebox" class="no-mark-external">
+      <span class="icon-hackthebox"></span>
+      <span class="sr-only">hackthebox</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://instagram.com/r3dw0lf_sec" title="Instagram" class="no-mark-external">
+      <span class="icon-instagram"></span>
+      <span class="sr-only">Instagram</span>
+    </a>
+  </li>
+
+
+    
+      
+
+
+
+  
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <li>
+    <a href="https://www.linkedin.com/in/venkatraman-k-14b9aa188" title="LinkedIn" class="no-mark-external">
+      <span class="icon-linkedin2"></span>
+      <span class="sr-only">LinkedIn</span>
+    </a>
+  </li>
+
+
+    
+  
+</ul>
+
+  </div>
+</div>
+  </header>
+</hy-drawer>
+<hr class="sr-only" hidden />
+:ET
