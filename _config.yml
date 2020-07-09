@@ -27,8 +27,7 @@ title:                 r3dw0lf_sec
 
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
-description:           >
-
+description: Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles
 # A shorter description for the sidebar.
 tagline:               Privacy is a myth.
 
@@ -38,7 +37,7 @@ keywords:              [CTF, Hackthebox, HTB, Privilege Escalation]
 # A (square) logo for your site.
 # If provided, it will be shown at the top of the sidebar.
 # It also used by the `jekyll-seo-tag` plugin.
-logo:                  /assets/img/red_wolf.jpg
+logo:                  /assets/img/redwolf.png
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:

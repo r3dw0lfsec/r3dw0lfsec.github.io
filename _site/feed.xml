@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-07-08T22:08:10+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle></subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Serverless Computing in a Nutshell</title><link href="http://localhost:4000/blogs/cloudsecurity/serverless.html" rel="alternate" type="text/html" title="Serverless Computing in a Nutshell" /><published>2020-02-07T00:00:00+05:30</published><updated>2020-02-07T00:00:00+05:30</updated><id>http://localhost:4000/blogs/cloudsecurity/serverlesscomputing</id><content type="html" xml:base="http://localhost:4000/blogs/cloudsecurity/serverless.html">&lt;p class=&quot;lead&quot;&gt;Most of the Serverless architecture are built with a motto of &lt;strong&gt;&lt;em&gt;“Focus on the application, not the infrastructure and maintenance”&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-07-09T22:37:39+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Serverless Computing in a Nutshell</title><link href="http://localhost:4000/blogs/cloudsecurity/serverless.html" rel="alternate" type="text/html" title="Serverless Computing in a Nutshell" /><published>2020-02-07T00:00:00+05:30</published><updated>2020-02-07T00:00:00+05:30</updated><id>http://localhost:4000/blogs/cloudsecurity/serverlesscomputing</id><content type="html" xml:base="http://localhost:4000/blogs/cloudsecurity/serverless.html">&lt;p class=&quot;lead&quot;&gt;Most of the Serverless architecture are built with a motto of &lt;strong&gt;&lt;em&gt;“Focus on the application, not the infrastructure and maintenance”&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#what-is-serverless-&quot; id=&quot;markdown-toc-what-is-serverless-&quot;&gt;What is serverless ?&lt;/a&gt;    &lt;ul&gt;
@@ -31,7 +31,7 @@
 &lt;h3 id=&quot;how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/h3&gt;
 &lt;p&gt;In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.&lt;/p&gt;
 
@@ -72,9 +72,9 @@
   &lt;/li&gt;
   &lt;li&gt;It creates two files : &lt;strong&gt;handler.js&lt;/strong&gt; and &lt;strong&gt;serverless.yml&lt;/strong&gt;. &lt;strong&gt;serverless.yml&lt;/strong&gt; is like a configuration file for your handler file, &lt;strong&gt;handler.js&lt;/strong&gt; is like a function file where each function that are required are coded.&lt;/li&gt;
   &lt;li&gt;Uncomment the needed event part in the serverless.yml .Here i am using the http event part
-&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
   &lt;li&gt;Run the command serverless deploy to deploy your instance.
-&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/h2&gt;
@@ -100,14 +100,14 @@ Follow the below steps to deploy a simple serverless service using Azure Functio
   &lt;li&gt;Create an HTTP-triggered function using the following command:
     &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func new &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Function_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;HttpTrigger&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;The following command starts the function app:
     &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;Navigate to URL displayed, append the query string &lt;em&gt;?name={yourname}&lt;/em&gt; to the URL and execute the request.
-&lt;img src=&quot;http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/h2&gt;
@@ -134,7 +134,7 @@ Follow the below steps to deploy a simple serverless service using Azure Functio
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;comparison&quot;&gt;Comparison&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/h2&gt;
 &lt;ol&gt;
