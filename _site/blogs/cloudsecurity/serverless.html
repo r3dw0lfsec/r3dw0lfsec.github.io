@@ -1,0 +1,148 @@
+<p class="lead">Most of the Serverless architecture are built with a motto of <strong><em>“Focus on the application, not the infrastructure and maintenance”</em></strong></p>
+<p><img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg" alt="" /></p>
+
+<ul class="large-only" id="markdown-toc">
+  <li><a href="#what-is-serverless-" id="markdown-toc-what-is-serverless-">What is serverless ?</a>    <ul>
+      <li><a href="#popular-serverless-computing-providers" id="markdown-toc-popular-serverless-computing-providers">Popular Serverless Computing Providers</a></li>
+      <li><a href="#how-does-serverless-computing-works" id="markdown-toc-how-does-serverless-computing-works">How Does Serverless Computing Works?</a></li>
+      <li><a href="#things-serverless-computing-can-handle" id="markdown-toc-things-serverless-computing-can-handle">Things Serverless Computing can Handle</a></li>
+    </ul>
+  </li>
+  <li><a href="#sample-use-case-scenario-of-serverless-computing" id="markdown-toc-sample-use-case-scenario-of-serverless-computing">Sample Use-Case Scenario of Serverless Computing</a></li>
+  <li><a href="#benefits-of-serverless-computing" id="markdown-toc-benefits-of-serverless-computing">Benefits of Serverless Computing:</a></li>
+  <li><a href="#serverless-computing-using-aws-lambda" id="markdown-toc-serverless-computing-using-aws-lambda">Serverless Computing using AWS Lambda</a></li>
+  <li><a href="#serverless-computing-using-azure-functions" id="markdown-toc-serverless-computing-using-azure-functions">Serverless Computing using Azure Functions</a></li>
+  <li><a href="#serverless-computing-using-google-cloud-functions" id="markdown-toc-serverless-computing-using-google-cloud-functions">Serverless Computing using Google Cloud Functions</a></li>
+  <li><a href="#comparison" id="markdown-toc-comparison">Comparison</a></li>
+  <li><a href="#security-risks-in-serverless-computing" id="markdown-toc-security-risks-in-serverless-computing">Security Risks in Serverless Computing</a></li>
+</ul>
+
+<h2 id="what-is-serverless-">What is serverless ?</h2>
+<p>Serverless is a cloud computing execution model where the cloud provider dynamically manages the allocation and provisioning of servers (Load balancing). A serverless application runs in stateless compute containers that are event-triggered and its completely managed by the cloud provider itself.</p>
+
+<h3 id="popular-serverless-computing-providers">Popular Serverless Computing Providers</h3>
+<ul>
+  <li>AWS lambda</li>
+  <li>Azure functions</li>
+  <li>Google Cloud functions</li>
+  <li>IBM OpenWhisk</li>
+</ul>
+
+<h3 id="how-does-serverless-computing-works">How Does Serverless Computing Works?</h3>
+<p>In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.</p>
+
+<p><img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/2.png" alt="" /></p>
+
+<p>Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.</p>
+
+<h3 id="things-serverless-computing-can-handle">Things Serverless Computing can Handle</h3>
+<ul>
+  <li>Load Balancing</li>
+  <li>Auto scaling</li>
+  <li>Handling Failures</li>
+  <li>Security Isolation</li>
+  <li>OS Management</li>
+  <li>Managing utilization</li>
+</ul>
+
+<h2 id="sample-use-case-scenario-of-serverless-computing">Sample Use-Case Scenario of Serverless Computing</h2>
+<p>When an image is uploaded into a Cloud Storage Service (such as S3), a Serverless function could automatically resize the image for mobile, tablet, desktop devices. The event that triggers the function is the file that has been uploaded to cloud storage. Serverless function then executes the function of resizing the image.</p>
+
+<h2 id="benefits-of-serverless-computing">Benefits of Serverless Computing:</h2>
+
+<ol>
+  <li><strong>Pay only when you use:</strong>The user will be charged against the time that your functions were running (Paid according to no. of request received and Compute time) . Such architectures remove the need for the traditional ‘always on’ server system sitting behind an application, significantly reducing operational cost and complexity.</li>
+  <li><strong>Easier Operational Management and Automatic Scaling:</strong>Automatic scaling functionality of FaaS not only reduces computational cost but also reduces operational management overheads.</li>
+</ol>
+
+<p><strong>Serverless Framework module:</strong>The Serverless Framework consists of an open source CLI that makes it easy to develop, deploy and test serverless apps across different cloud providers, secure and monitor your serverless apps. This can be installed using the below command:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> serverless
+</code></pre></div></div>
+
+<h2 id="serverless-computing-using-aws-lambda">Serverless Computing using AWS Lambda</h2>
+<p class="lead">Follow the below steps to deploy a simple serverless service using AWS Lambda</p>
+<ol>
+  <li>Configure your CLI with the below command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>serverless config credentials - provider aws - key <span class="s2">"YOUR ACCOUNT KEY"</span> - secret <span class="s2">" YOUR SECRET KEY"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Create a project folder for serverless computing with needed template.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>serverless create <span class="nt">-t</span> aws-nodejs
+</code></pre></div>    </div>
+  </li>
+  <li>It creates two files : <strong>handler.js</strong> and <strong>serverless.yml</strong>. <strong>serverless.yml</strong> is like a configuration file for your handler file, <strong>handler.js</strong> is like a function file where each function that are required are coded.</li>
+  <li>Uncomment the needed event part in the serverless.yml .Here i am using the http event part
+<img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/3.png" alt="" /></li>
+  <li>Run the command serverless deploy to deploy your instance.
+<img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/4.png" alt="" /></li>
+</ol>
+
+<h2 id="serverless-computing-using-azure-functions">Serverless Computing using Azure Functions</h2>
+<p class="lead">Microsoft Azure allows the users to develop and run the serverless functions both on Cloud and Local environment. 
+Follow the below steps to deploy a simple serverless service using Azure Functions</p>
+<ol>
+  <li>Run the following command from the command line to create a function app project. A github repository is also created with the same name.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func init <span class="o">{</span>Folder_Name<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Select a worker runtime from the following language choices that will be prompted after creating the project:
+    <ul>
+      <li>.NET</li>
+      <li>Node JS</li>
+      <li>Powershell</li>
+      <li>Python</li>
+    </ul>
+  </li>
+  <li>Navigate to the created project folder.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> <span class="o">{</span>Folder_Name<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Create an HTTP-triggered function using the following command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func new <span class="nt">--name</span> <span class="o">{</span>Function_Name<span class="o">}</span> <span class="nt">--template</span> <span class="s2">"HttpTrigger"</span>
+</code></pre></div>    </div>
+    <p><img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/5.png" alt="" /></p>
+  </li>
+  <li>The following command starts the function app:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func start
+</code></pre></div>    </div>
+  </li>
+  <li>Navigate to URL displayed, append the query string <em>?name={yourname}</em> to the URL and execute the request.
+<img src="http://localhost:4000//assets/img/blog/cloudsecurity/serverlesscomputing/6.png" alt="" /></li>
+</ol>
+
+<h2 id="serverless-computing-using-google-cloud-functions">Serverless Computing using Google Cloud Functions</h2>
+<p>Follow the below steps to deploy a simple serverless service using Google Cloud Functions</p>
+<ol>
+  <li>Install serverless on your machine if not installed.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> serverless
+</code></pre></div>    </div>
+  </li>
+  <li>Create a project folder for serverless computing with needed template.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>serverless create <span class="nt">--template</span> google-nodejs <span class="nt">--path</span> <span class="o">{</span>Folder_Name<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>It creates three files: <strong>index.js</strong>, <strong>package.json</strong>, <strong>serverless.yml</strong></li>
+  <li>Install all the dependencies
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Create the credential key for your project on Google Cloud Console, download the key and update the key path on serverless.yml</li>
+  <li>Deploy the Serverless Instance
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>serverless deploy
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="comparison">Comparison</h2>
+<p><img src="http://localhost:4000/assets/img/blog/cloudsecurity/serverlesscomputing/7.png" alt="" /></p>
+
+<h2 id="security-risks-in-serverless-computing">Security Risks in Serverless Computing</h2>
+<ol>
+  <li><strong>Function Event-Data Injection</strong>: Serverless functions can consume input form different types of event sources. Various parts of these event sources may contain user-controlled or untrusted inputs that should be carefully inspected.</li>
+  <li><strong>Broken Authentication</strong>: Applications may contain dozens or even hundreds of functions. Applying robust authentication can easily go awry if not executed carefully.</li>
+  <li><strong>Serverless Business Logic Manipulation</strong>: Serverless applications are unique as they often follow the micro-services design and contain numerous functions chained together to form overall logic. Without proper enforcement, attackers may be able to tamper with intended logic.</li>
+  <li><strong>Insecure Application  Secrets Storage</strong>: In Serverless application secrets such as Credentials, API Key etc. may be stored in a plain text configuration file that may be accessible to the end user and in some cases these credentials will be in plain text, as environment variables.</li>
+  <li><strong>Improper Exception Handling and Verbose Error Messages</strong>: Serverless computing provides line-by-line debugging options for applications. As a result, developers frequently adopt the use of verbose error messages, which may leak sensitive data.</li>
+</ol>
+
+<p class="lead">Happy Hacking!</p>
