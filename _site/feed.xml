@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-07-18T04:13:02+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/book.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-16T00:00:00+05:30</published><updated>2020-07-16T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/book.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/poster.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-07-18T04:26:39+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/sauna.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-16T00:00:00+05:30</published><updated>2020-07-16T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/sauna.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/poster.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#machine-matrix&quot; id=&quot;markdown-toc-machine-matrix&quot;&gt;Machine Matrix&lt;/a&gt;&lt;/li&gt;
@@ -13,7 +13,7 @@
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/machinematrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/machinematrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
 &lt;p&gt;Box has an webapplication running, from which we enumerated the usernames. We made certain modifications on the usernames and ran GetNPUsers.py from impacket library inorder to check whether any user has kerberos pre-authentication disabled. As expected one (fsmith) user as kerberos pre-authentication disabled and using winrm we get the user shell. Now for privilege escalation, we find that there is a default crendentials stored for a user (svs_loanmgr) but that that is not the administrator. We use secretsdump.py again from impacket library to dump the crendentials of all the user including the administrator.&lt;/p&gt;
@@ -22,7 +22,7 @@
 &lt;p&gt;I started the enumeration with nmap scan&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; 10.10.10.10.175
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The Box had 12 ports open&lt;/p&gt;
 
@@ -95,7 +95,7 @@ hugo bear
 steven kerb
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;enumerating-with-usernames&quot;&gt;Enumerating with usernames&lt;/h2&gt;
 
@@ -106,7 +106,7 @@ johnm
 john.melon
 john.m
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;kerberos-pre-authentication&quot;&gt;Kerberos Pre-Authentication&lt;/h2&gt;
 &lt;p&gt;The Key Distribution Center (KDC) is available as part of the domain controller and performs two key functions which are: Authentication Service (AS) and Ticket-Granting Service (TGS)&lt;/p&gt;
@@ -115,28 +115,28 @@ john.m
 
 &lt;p&gt;When you do not enforce pre-authentication, a malicious attacker can directly send a dummy request for authentication. The KDC will return an encrypted TGT and the attacker can brute force it offline.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/kerberos_preauthentication.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/kerberos_preauthentication.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;acquring-user-shell&quot;&gt;Acquring User Shell&lt;/h2&gt;
 &lt;p&gt;Some time kerberos pre-authentication is disabled for the domain users. As mentioned earlier we can get the encrypted TGT with a dumy query using GetNPUsers.py from impacket library with the username list that i have formed.&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GetNPUsers.py EGOTISTICAL-BANK.LOCAL/ &lt;span class=&quot;nt&quot;&gt;-usersfile&lt;/span&gt; usernames.txt &lt;span class=&quot;nt&quot;&gt;-no-pass&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-format&lt;/span&gt; john &lt;span class=&quot;nt&quot;&gt;-outputfile&lt;/span&gt; hash.txt
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I was able to retrive the kerberos hash for the username fsmith&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I cracked the obtained hash of fsmith using john, the password for fsmith was &lt;strong&gt;&lt;em&gt;Thestrokes23&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now i used evil-winrm tool with the username as &lt;em&gt;fsmith&lt;/em&gt; and password as &lt;em&gt;Thestrokes23&lt;/em&gt; to get the shell.&lt;/p&gt;
 
 &lt;h2 id=&quot;privilege-escalation&quot;&gt;Privilege Escalation&lt;/h2&gt;
 &lt;p&gt;As usual i ran winpeas for enumerating on the privilege escalation, found there was an autologon credentials for the user svc_loanmanager&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;we can also manually verify it using the command:&lt;/p&gt;
 &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;REG&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;QUERY&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/v&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;DefaultPassword&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -155,14 +155,14 @@ I manually enumerated it and found that it is a part of domain controlle&lt;/p&g
 &lt;p&gt;So i ran secretsdump.py to dump the credentials of all the users.&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;secretsdump.py EGOTISTICAL-BANK.local/svc_loanmgr@EGOTISTICAL-BANK.local
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now i used the NTLM hash of the administrator directly in evil-winrm to get the shell&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;evil-winrm &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.175 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; administrator &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;HASH&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000//assets/img/blog/HTB/sauna/sauna.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/sauna.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Happy Hacking!&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.” - Bill Gates</summary></entry><entry><title type="html">Book Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/book.html" rel="alternate" type="text/html" title="Book Machine Walkthrough" /><published>2020-07-11T00:00:00+05:30</published><updated>2020-07-11T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/book</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/book.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#machine-matrix&quot; id=&quot;markdown-toc-machine-matrix&quot;&gt;Machine Matrix&lt;/a&gt;&lt;/li&gt;
@@ -177,7 +177,7 @@ I manually enumerated it and found that it is a part of domain controlle&lt;/p&g
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;“There is no friend as loyal as a book.”&lt;/em&gt;&lt;/strong&gt; - Ernest Hemingway&lt;/p&gt;
 &lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
 &lt;p&gt;Box has an webapplication running that has two user roles: 1. Normal User 2. Admin. Normal user can suggest a book with book name and author of the book, once the book is submitted the admin would approve it. There is an XSS attack in these fields. Admin can be again registered as a user using SQL Truncation attack. The book and author name entered by the user is processed, generated in a pdf that can be viewed in the Admin panel. We use this attack scenario to read the local system files (/etc/passwd and ssh keys of a user). With this, we can gain the user shell through SSH. Inorder to esclate the privileges to root, we monitor the services that are running in the box using &lt;a href=&quot;https://github.com/DominicBreuker/pspy&quot;&gt;pspy&lt;/a&gt;. Logrotate is the process that gets executed every 5 seconds and it as exploit. We use that for privilege escalation&lt;/p&gt;
@@ -186,7 +186,7 @@ I manually enumerated it and found that it is a part of domain controlle&lt;/p&g
 &lt;p&gt;I started the enumeration with nmap scan&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; 10.10.10.10.176
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The Box had two ports open&lt;/p&gt;
 
@@ -212,7 +212,7 @@ I manually enumerated it and found that it is a part of domain controlle&lt;/p&g
 &lt;h2 id=&quot;enumeration-on-port-80&quot;&gt;Enumeration on port 80&lt;/h2&gt;
 &lt;p&gt;I ran dirbuster on port 80&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Running dirbuster revealed certain end points that are accessible other than 302:&lt;/p&gt;
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/admin/
@@ -222,33 +222,33 @@ I manually enumerated it and found that it is a part of domain controlle&lt;/p&g
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;These didn’t have any kind of juicy data so i started to enumerate on the port 80 I created an account in the application&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I enumerated the entire site with the application. There was a functionality (book submission) i can suggest  a book and that would be approved by the admin. So i thought i can upload a malicious fight and if i could get or bypass admin authentication then i would possibly approve it and the exploit code running. I also found admin’s mail id in contact us page.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I visited the admin page but it needed admin credentials.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/HTB/book/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;sql-truncation-attack&quot;&gt;SQL Truncation Attack&lt;/h2&gt;
 &lt;p&gt;On viewing the source of the signup page, length of the name and the email parameters are predefined.&lt;/p&gt;
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Name: Not more than 10 characters
 email: 20 characters
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;On researching a bit, i came to know i can possible use sql truncation attack to signup as admin user (admin@book.htb)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;local-file-read-via-xss&quot;&gt;Local File Read Via XSS&lt;/h2&gt;
 &lt;p&gt;I went to the admin login page and logged in as admin with  password that i used during the registration (SQL truncation attack). Collections is the page that is related to the functionality which was discussed earlier in this module. I went on with user module and after enumerating a bit, i found that at book submission book title and Author is vulnerable to some kind of stored xss attack. when i give a script tag in the book title,author and upload a random file. This data is processed and exported as a pdf file that can be viewed in admin panel.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Upon researching, i came to know how xss attack can be used to read the intermal files. &lt;strong&gt;&lt;a href=&quot;https://www.noob.ninja/2017/11/local-file-read-via-xss-in-dynamically.html&quot;&gt;Local File Read Via XSS&lt;/a&gt;&lt;/strong&gt;. 
 I used the below script to read the /etc/passwd file present in the machine, from which i can get the list of potential users.&lt;/p&gt;
@@ -261,7 +261,7 @@ I used the below script to read the /etc/passwd file present in the machine, fro
 &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;acquring-user-shell&quot;&gt;Acquring User Shell&lt;/h2&gt;
 &lt;p&gt;There is only one potential user (user that have home/user are considered as actual users other all are just services like daemon). Now I would try to read the ssh private key present in the .ssh directory of the user, so that i can login into the box using the key.
@@ -275,23 +275,23 @@ Below is the script for reading the ssh private key of the user &lt;strong&gt;re
 &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/script&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; 
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now, I logged in as admin to view the proccessed pdf. I got ssh private key. I copied the entire key to my kali machine and saved it as id_rsa. I set the permissions to the id_rsa file using the below command.&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;I logged into the machine as user reader and got the user.txt&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;privilege-escalation&quot;&gt;Privilege escalation&lt;/h2&gt;
 &lt;p&gt;I ran the linpeas it revealed some information that can be liverged to be used for priv-esec, it showed that logrotate is present and it is vulnerable to logrotten exploit.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I also ran pspy to monitor what are the services running in the machine and inorder to check whether there is any service related to logrotate or logrotate process is getting executed.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As expected logrotate is getting executed every 5 seconds. The logrotate utility makes log rotation easy. “Log rotation” refers to the practice of archiving an application’s current log, starting a fresh log, and deleting older logs. The system usually runs logrotate once a day, and when it runs it checks rules that can be customized on a per-directory or per-log basis.
 so that root part is clear we must use the logrotten exploit (race condition vulnerability) &lt;strong&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/47466&quot;&gt;exploit&lt;/a&gt;&lt;/strong&gt;
@@ -306,26 +306,26 @@ Conditions for privilege escalation&lt;/p&gt;
 &lt;p&gt;All the preconditions are satisfied as the logrotate is executed by root and i had an accessible log file that is /home/reader/backups/access.log
 I transfered the compiled file of logrotten exploit to the box in /tmp directory as i had access over it completely.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/19.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/19.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I created the payload file that can grant me root shell through copying the /bin/bash file to /tmp then i executed the exploit&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./logrooten &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; exp /home/reader/backups/access.log
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;When i executed the copied file it granted me the root shell
-&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Instead we can also create a payload file that copies the root.txt file directly to the /tmp directory&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/24.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/24.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/HTB/book/25.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/25.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /></entry><entry><title type="html">Serverless Computing in a Nutshell</title><link href="http://localhost:4000/blogs/cloudsecurity/serverless.html" rel="alternate" type="text/html" title="Serverless Computing in a Nutshell" /><published>2020-02-07T00:00:00+05:30</published><updated>2020-02-07T00:00:00+05:30</updated><id>http://localhost:4000/blogs/cloudsecurity/serverlesscomputing</id><content type="html" xml:base="http://localhost:4000/blogs/cloudsecurity/serverless.html">&lt;p class=&quot;lead&quot;&gt;Most of the Serverless architecture are built with a motto of &lt;strong&gt;&lt;em&gt;“Focus on the application, not the infrastructure and maintenance”&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#what-is-serverless-&quot; id=&quot;markdown-toc-what-is-serverless-&quot;&gt;What is serverless ?&lt;/a&gt;    &lt;ul&gt;
@@ -357,7 +357,7 @@ I transfered the compiled file of logrotten exploit to the box in /tmp directory
 &lt;h3 id=&quot;how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/h3&gt;
 &lt;p&gt;In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.&lt;/p&gt;
 
@@ -398,9 +398,9 @@ I transfered the compiled file of logrotten exploit to the box in /tmp directory
   &lt;/li&gt;
   &lt;li&gt;It creates two files : &lt;strong&gt;handler.js&lt;/strong&gt; and &lt;strong&gt;serverless.yml&lt;/strong&gt;. &lt;strong&gt;serverless.yml&lt;/strong&gt; is like a configuration file for your handler file, &lt;strong&gt;handler.js&lt;/strong&gt; is like a function file where each function that are required are coded.&lt;/li&gt;
   &lt;li&gt;Uncomment the needed event part in the serverless.yml .Here i am using the http event part
-&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
   &lt;li&gt;Run the command serverless deploy to deploy your instance.
-&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/h2&gt;
@@ -426,14 +426,14 @@ Follow the below steps to deploy a simple serverless service using Azure Functio
   &lt;li&gt;Create an HTTP-triggered function using the following command:
     &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func new &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Function_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;HttpTrigger&quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;The following command starts the function app:
     &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;Navigate to URL displayed, append the query string &lt;em&gt;?name={yourname}&lt;/em&gt; to the URL and execute the request.
-&lt;img src=&quot;https://r3dw0lfsec.github.io//assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/h2&gt;
@@ -460,7 +460,7 @@ Follow the below steps to deploy a simple serverless service using Azure Functio
 &lt;/ol&gt;
 
 &lt;h2 id=&quot;comparison&quot;&gt;Comparison&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.github.io/assets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.inassets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/h2&gt;
 &lt;ol&gt;
