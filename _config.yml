@@ -54,8 +54,6 @@ menu:
     url:               /recentpublishes/
   - title:             Blogs
     url:               /blog/index.html
-  - title:             Resume
-    url:               https://drive.google.com/file/d/1x9U6klYusNAEH7E30Vh-whvXXaK0kRu8/view?usp=sharing
   - title:             $ whoami
     url:               /about/index.html
 
