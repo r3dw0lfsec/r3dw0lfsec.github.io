@@ -98,9 +98,10 @@ We execute the container
 ```
 /snap/bin/lxc exec test bash
 ```
-Now we go into the directory **/mnt/root/root** to get the flag.txt
 
 ![](https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/7.png)
+
+Now we go into the directory **/mnt/root/root** to get the flag.txt
 
 ![](https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/8.png)
 
