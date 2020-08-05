@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-05T13:58:56+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">InfoSec Prep OSCP - Vuln Hub Machine</title><link href="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html" rel="alternate" type="text/html" title="InfoSec Prep OSCP - Vuln Hub Machine" /><published>2020-08-05T00:00:00+05:30</published><updated>2020-08-05T00:00:00+05:30</updated><id>http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP</id><content type="html" xml:base="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-05T18:28:27+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">InfoSec Prep OSCP - Vuln Hub Machine</title><link href="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html" rel="alternate" type="text/html" title="InfoSec Prep OSCP - Vuln Hub Machine" /><published>2020-08-05T00:00:00+05:30</published><updated>2020-08-05T00:00:00+05:30</updated><id>http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP</id><content type="html" xml:base="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-80&quot; id=&quot;markdown-toc-enumeration-on-port-80&quot;&gt;Enumeration on Port 80&lt;/a&gt;&lt;/li&gt;
@@ -133,7 +133,226 @@ ie. a low privilege user can create a bridge between sockets on the host and its
 
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="VulnHub" /></entry><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/sauna.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-18T00:00:00+05:30</published><updated>2020-07-18T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/sauna.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
+&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="VulnHub" /></entry><entry><title type="html">Cascade Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/cascade.html" rel="alternate" type="text/html" title="Cascade Machine Walkthrough" /><published>2020-07-25T00:00:00+05:30</published><updated>2020-07-25T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/cascade</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/cascade.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Your most unhappy customers are your greatest source of learning.&lt;/em&gt;&lt;/strong&gt;” - Bill Gates&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/machine.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-matrix&quot; id=&quot;markdown-toc-machine-matrix&quot;&gt;Machine Matrix&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-139-and-445&quot; id=&quot;markdown-toc-enumeration-on-port-139-and-445&quot;&gt;Enumeration on port 139 and 445&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumerating-using-ldap-queries&quot; id=&quot;markdown-toc-enumerating-using-ldap-queries&quot;&gt;Enumerating Using LDAP Queries&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumerating-shares-with-rthompson-credentials&quot; id=&quot;markdown-toc-enumerating-shares-with-rthompson-credentials&quot;&gt;Enumerating Shares with r.thompson credentials&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-user-shell---ssmith&quot; id=&quot;markdown-toc-acquiring-user-shell---ssmith&quot;&gt;Acquiring User Shell - s.smith&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#privilege-escalation&quot; id=&quot;markdown-toc-privilege-escalation&quot;&gt;Privilege Escalation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#disassembling-cascauditexe-and-casccryptodll&quot; id=&quot;markdown-toc-disassembling-cascauditexe-and-casccryptodll&quot;&gt;Disassembling CascAudit.exe and CascCrypto.dll&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-administrator-access&quot; id=&quot;markdown-toc-acquiring-administrator-access&quot;&gt;Acquiring Administrator Access&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
+&lt;p&gt;Box is a windows machine that has Active Directory services running. Starting with, for a user account enocded password is stored in one of the account’s attributes which is retrived using ldap search. Upon enumerating the shares with the obtained credentials, VNC.reg file is witnessed from which we can crack the password for the user s.smith. Now for privilege escalation, again enumerating on shares with s.smith credentials gives us access to Audit.db that has custom encrypted password. We use the DnSpy to witness the encryption mechanisim. After decryption, we have credentials for account ArkSvc ( Service Account). We then use this account to recover a deleted account TempAdmin. Administrator’s password is same as TempAdmin.&lt;/p&gt;
+
+&lt;h2 id=&quot;nmap-scan&quot;&gt;Nmap Scan&lt;/h2&gt;
+&lt;p&gt;I started the enumeration with nmap scan&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; 10.10.10.182
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Box has 13 ports open&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Port&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Service&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;53&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;88&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;kerberos-sec&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;135&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;msrpc&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;139&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;netbios-ssn&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;389&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;ldap&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;445&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;microsoft-ds&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;636&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;tcpwrapped&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3268&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;ldap&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3269&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;tcpwrapped&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;49154&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;msrpc&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;49155&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;msrpc&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;49157&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;ncacn_http&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;49158&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;msrpc&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;enumeration-on-port-139-and-445&quot;&gt;Enumeration on port 139 and 445&lt;/h2&gt;
+&lt;p&gt;I used smbclient to check whether anonymous login is allowed in the machine but it was unsuccessfull. I ran enum4linux to enumerate more&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;enum4linux 10.10.10.182
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Usernames&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CascGuest
+arksvc
+s.smith
+r.thompson
+util
+j.wakefield
+s.hickson
+j.goodhand
+a.turnbull
+e.crowe
+b.hanson
+d.burman
+BackupSvc
+j.allen
+i.croft
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I checked whether any of these users have kerberos pre-authentication disabled, that would lead us to inital foothold but that didn’t workout.&lt;/p&gt;
+
+&lt;h2 id=&quot;enumerating-using-ldap-queries&quot;&gt;Enumerating Using LDAP Queries&lt;/h2&gt;
+&lt;p&gt;I started to enumerate the Active Directory using LDAP Queries&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ldapsearch &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;dc=cascade,dc=local&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; ldap://10.10.10.182
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This gave a huge amount of result so i copied this result to a text file inorder to manually enumerate on it. This gave me a lead, I got a base64 encoded password in the object &lt;strong&gt;cascadeLegacyPwd&lt;/strong&gt; of ryan thompson user (r.thompson)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Encoded password: clk0bjVldmE=
+Decoded password: rY4n5eva
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I tried to login on winrm using evilwinrm for obtained credentials but didn’t work.&lt;/p&gt;
+
+&lt;h2 id=&quot;enumerating-shares-with-rthompson-credentials&quot;&gt;Enumerating Shares with r.thompson credentials&lt;/h2&gt;
+&lt;p&gt;Now i tried to enumerate on the shares with the obtained credentials of r.thompson. Thompson had access to certain shared folders.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;smbclient //10.10.10.182/ &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; r.thompson
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I enumerated on each folders, upon enumeration i got &lt;strong&gt;VNC Install.reg&lt;/strong&gt; file from \IT\Temp\s.smith\ Directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-user-shell---ssmith&quot;&gt;Acquiring User Shell - s.smith&lt;/h2&gt;
+&lt;p&gt;I downloaded the file and started looking in to it. As it is an registry file, it had object which has the password in encoded form.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I thought it was in hex format but it wasn’t. Upon researching a bit, i got a tool for drypting the encoded password in VNC registry file. [vncpwd]https://aluigi.altervista.org/pwdrec/vncpwd.zip). I used this tool to decrypt the password&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/7.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username: s.smith
+password: sT333ve2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I used to evil-winrm to get the shell&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;evil-winrm &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; s.smith &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; sT333ve2 &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; 10.10.10.182
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privilege-escalation&quot;&gt;Privilege Escalation&lt;/h2&gt;
+&lt;p&gt;Again i went to enumerate on shares with s.smith credentials,&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;smbclient //10.10.10.182/Audit&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; s.smith
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There is a file called Audit.db, that may be our way for privilege escalation. I simply checked the contents on the file using strings command&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;strings Audit.db
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/10.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I found an hash which must be the password. I tried to decrypt the hash using john and hashcat but that didn’t work. I concluded that it must be a custom encrypted password.&lt;/p&gt;
+
+&lt;h2 id=&quot;disassembling-cascauditexe-and-casccryptodll&quot;&gt;Disassembling CascAudit.exe and CascCrypto.dll&lt;/h2&gt;
+&lt;p&gt;On shares enumerating, we found an exec and a dll file CascAudit.exe and CascCrypto.dll. These files are used for encryption, hence these must be disassembled to find the encryption technique and decrypting it.&lt;/p&gt;
+
+&lt;p&gt;I imported CascAudit.exe and CascCrypto.dll on DnSpy. I noticed that the encryption technique used is AES 128 bit with CBC mode. I got the Secret Key (c4scadek3y654321) and IV Optional Key (1tdyjCbY1Ix49842)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/11.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/12.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I used the online AES decrypter to decrypt the password through providing the keys and the encrypted password.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/13.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username: arksvc
+password: w3lc0meFr31nd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Upon enumeration of shares using the s.smith credentials, i got an log file (ArkAdRecycleBin.log) and a html file (Meeting_Notes_June_2018.html)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I downloaded these files and started to enumerate on it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-administrator-access&quot;&gt;Acquiring Administrator Access&lt;/h2&gt;
+&lt;p&gt;According to the log file TempAdmin User was deleted by ArkSvc user. Reading the Meeting_Notes_June_2018.html describes that the password for TempAdmin and Administrator are same.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now if we are able to recover the TempAdmin password from the user who deleted TempAdmin (ArkSvc), we can have the administrator shell. I researched google on how to recover deleted accounts. I found a blog on how to recover the deleted accounts using powershell&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;Get-ADObject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-filter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'isdeleted -eq $true -and name -ne &quot;Deleted Objects&quot;'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-includeDeletedObjects&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-property&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I ran this command in the shell of ArkSvc user&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As expected we have an password encoded in base64 on the parameter cascadeLegacyPwd. I decoded it.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username: TempAdmin, Administrator
+password: baCT3r1aN00dles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I got the administrator shell using evil-winrm with these credentials&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/pwned.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“Your most unhappy customers are your greatest source of learning.” - Bill Gates</summary></entry><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/sauna.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-18T00:00:00+05:30</published><updated>2020-07-18T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/sauna.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/poster.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;

