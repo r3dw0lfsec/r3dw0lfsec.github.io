@@ -121,7 +121,7 @@ find / -perm -u=s -type f 2>/dev/null
 
 Bash was the juicy binary. we can exploit it to get the root privilege
 
-[**GetFoBins**](https://gtfobins.github.io/#+suid)
+[**GTFOBins**](https://gtfobins.github.io/#+suid)
 
 ```bash
 bash -p
