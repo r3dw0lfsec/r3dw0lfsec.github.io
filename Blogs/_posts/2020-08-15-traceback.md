@@ -12,6 +12,9 @@ permalink: /:categories/traceback.html
 {:.lead}
 ![](https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/machine.jpeg)
 
+* toc
+{:toc .large-only}
+
 ## Machine Matrix
 ![](https://r3dw0lfsec.in/assets/img/blog/HTB/traceback/matrix.png)
 
